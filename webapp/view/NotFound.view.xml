@@ -1,0 +1,20 @@
+<mvc:View
+   controllerName="br.com.switch.salestem.controller.NotFound"
+   xmlns="sap.m"
+   xmlns:mvc="sap.ui.core.mvc">
+
+   <Page id="id_page" showHeader="false">
+      <content>
+         <IllustratedMessage id="id_illustrated_message"
+            illustrationType="sapIllus-PageNotFound"
+            enableVerticalResponsiveness="true"
+            title="{i18n>notFound}"
+            description="{i18n>notFound.text}">
+            
+            <additionalContent>
+               <Button id="btn_back" text="{i18n>notFound.btnBack}" press=".onNavBack('login')" />
+            </additionalContent>
+         </IllustratedMessage>
+         </content>
+   </Page>
+</mvc:View>

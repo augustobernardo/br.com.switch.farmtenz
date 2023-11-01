@@ -1,4 +1,4 @@
-# UI5 Application br.com.switch.farmtenz
+# UI5 Application br.com.switch.salestem
 
 Insert the purpose of this project and some interesting info here...
 

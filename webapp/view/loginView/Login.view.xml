@@ -1,0 +1,124 @@
+<mvc:View controllerName="br.com.switch.salestem.controller.Login" height="100%"
+  xmlns="sap.m"
+  xmlns:f="sap.f"
+  xmlns:card="sap.f.cards"
+  xmlns:mvc="sap.ui.core.mvc">
+
+  <Page id="id_page" showHeader="false">
+    <content>
+      <VBox
+        id="id_vBox"
+        justifyContent="Center"
+        alignContent="Center"
+        alignItems="Center"
+        class="sapUiLargeMarginTop">
+
+        <Title
+          id="id_salestem_title"
+          class="sapUiSmallMarginBottom
+          sapUiLargeMarginTop"
+          text="{i18n>title}"
+          level="H1"
+          titleStyle="H2" textAlign="Center"/>
+
+        <f:Card id="id_Card">
+
+          <f:header>
+            <card:Header
+              id="id_header"
+              title="{i18n>login.loginTitle}"
+              subtitle="{i18n>login.subTitle}"/>
+          </f:header>
+
+          <f:content>
+            <VBox
+              id="login_form"
+              class="sapUiSmallMargin"
+              width="100%">
+
+              <!-- EMAIL -->
+              <Label
+                id="lbl_email"
+                text="{i18n>form.email}"
+                required="true" />
+              <Input
+                id="input_email"
+                type="Email"
+                submit="onSubmitLogin"
+                liveChange="onLiveChangeEmail"
+                value="{loginModel>/LoginForm/Email}" />
+
+              <!-- PASSWORD -->
+              <Label
+                id="lbl_pass"
+                text="{i18n>form.password}"
+                required="true" />
+              <Input
+                id="input_pass"
+                type="Password"
+                submit="onSubmitLogin"
+                liveChange="onLiveChangePass"
+                value="{loginModel>/LoginForm/Password}" />
+
+              <!-- REMEMBER ME -->
+              <HBox
+                id="hbox_remember_forgot"
+                class="sapUiSmallMarginTop"
+                width="100%"
+                justifyContent="SpaceBetween">
+
+                <CheckBox
+                  id="check_remember"
+                  text="{i18n>login.rememberMe}"
+                  selected="{loginModel>/LoginForm/RememberMe}"/>
+
+                <Link
+                  id="link_forgot"
+                  text="{i18n>login.forgotPassword}"
+                  press="onForgot"
+                  class="sapUiTinyMarginTop" />
+              </HBox>
+
+              <VBox
+                id="vbox_btn_login"
+                width="100%"
+                class="sapUiTinyMarginTop"
+                justifyContent="Center"
+                alignContent="Center"
+                alignItems="Center">
+
+                <Button
+                  id="btn_login"
+                  width="15rem"
+                  type="Emphasized"
+                  text="{i18n>login.btnLogin}"
+                  press="onLogin" />
+              </VBox>
+
+              <HBox
+                id="hbox_register"
+                width="100%"
+                justifyContent="Center">
+
+                <Text
+                  id="text_register"
+                  text="{i18n>login.dontHaveAccount}"
+                  class="sapUiSmallMarginTop" />
+
+                <ToolbarSpacer
+                  id="toolbar_spacer"
+                  width="0.2rem" />
+
+                <Link
+                  id="link_register"
+                  text="{i18n>form.createAccount}"
+                  press="onRouteRegister"
+                  class="sapUiSmallMarginTop" />
+              </HBox>
+            </VBox>
+          </f:content>
+        </f:Card>
+      </VBox>
+    </content>
+  </Page>
+</mvc:View>

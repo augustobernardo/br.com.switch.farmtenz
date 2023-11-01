@@ -4,7 +4,7 @@ self.addEventListener('install', function(event) {
       return cache.addAll([
         '/index.html',
         '/Component.js',
-		'/manifest.json'
+		    '/manifest.json'
         // Adicione aqui os recursos que deseja que sejam armazenados em cache
       ]);
     })

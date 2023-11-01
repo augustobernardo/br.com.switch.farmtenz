@@ -1,12 +1,12 @@
 {
   "generator-ui5-app": {
-    "namespace": "br.com.switch.farmtenz",
+    "namespace": "br.com.switch.salestem",
     "framework": "OpenUI5",
     "frameworkVersion": "1.120.0",
-    "author": "Augusto Oliveira",
+    "author": "Switch House",
     "initrepo": true,
-    "appId": "br.com.switch.farmtenz",
-    "appURI": "br/com/switch/farmtenz",
+    "appId": "br.com.switch.salestem",
+    "appURI": "br/com/switch/salestem",
     "cdnDomain": "sdk.openui5.org",
     "defaultTheme": "sap_horizon",
     "qunitCoverageFile": "qunit-coverage-istanbul.js",
