@@ -1,14 +1,15 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m" xmlns:tnt="sap.tnt">
 
-  <tnt:SideNavigation 
-    id="sideNavigation" 
-    selectedKey="subItem3" >
+  <tnt:SideNavigation
+    id="sideNavigation"
+    selectedKey="home" >
     <tnt:NavigationList>
 
       <tnt:NavigationListItem
-        id="teste"
-        text="Item 1"
-        icon="sap-icon://employee" />
+        id="homeItem"
+        key="home"
+        text="Home"
+        icon="sap-icon://home" />
 
       <tnt:NavigationListItem
         id="teste2"
@@ -16,15 +17,15 @@
         icon="sap-icon://building" />
 
     </tnt:NavigationList>
-    
+
     <tnt:fixedItem>
       <tnt:NavigationList>
 
         <!-- <tnt:NavigationListItem
-          text="{i18n>btnChangeTheme}"
-          select="onChangeTheme"
-          icon="{= ${homeView>/Theme} === true ? 'sap-icon://dark-mode' : 'sap-icon://light-mode' }" /> -->
-        
+          text="{i18n>btnConfigurations}"
+          select="onShowConfigDialog"
+          icon="sap-icon://settings" /> -->
+
         <tnt:NavigationListItem
           text="{i18n>btnLogout}"
           icon="sap-icon://log"
@@ -33,5 +34,5 @@
       </tnt:NavigationList>
     </tnt:fixedItem>
   </tnt:SideNavigation>
-  
+
 </core:FragmentDefinition>

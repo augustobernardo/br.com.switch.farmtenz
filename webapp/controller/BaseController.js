@@ -1,6 +1,6 @@
 sap.ui.define([
-	"sap/ui/core/mvc/Controller", 
-	"sap/ui/core/UIComponent", 
+	"sap/ui/core/mvc/Controller",
+	"sap/ui/core/UIComponent",
 	"sap/ui/core/routing/History"
 ], function (Controller, UIComponent, History) {
 	"use strict";
@@ -24,6 +24,24 @@ sap.ui.define([
 			return this.getView().getModel(sName);
 		},
 
+		getLanguage: function () {
+			return sap.ui.getCore().getConfiguration().getLanguage();
+		},
+
+		getSystemLanguage: function () {
+			let userLocale =
+				navigator.languages && navigator.languages.length
+					? navigator.languages[0]
+					: navigator.language;
+
+			return userLocale;
+		},
+
+		getSystemTheme: function () {
+			let bDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
+			sap.ui.getCore().applyTheme(bDarkTheme.matches ? "sap_horizon_dark" : "sap_horizon");
+		},
+
 		setModel: function (oModel, sName) {
 			this.getView().setModel(oModel, sName);
 			return this;
@@ -41,7 +59,7 @@ sap.ui.define([
 				this.getRouter().navTo(sRoute, {}, undefined, true);
 			}
 		},
-		
+
 		onSideNavButtonPress: function () {
 			let oToolPage = this.byId("toolPageId");
 			let bSideExpanded = oToolPage.getSideExpanded();
@@ -214,6 +232,10 @@ sap.ui.define([
 
 		applyTheme: function(sTheme) {
 			sap.ui.getCore().applyTheme(sTheme);
+		},
+
+		applyLanguage: function(sLanguage) {
+			sap.ui.getCore().getConfiguration().setLanguage(sLanguage);
 		},
 	});
 });

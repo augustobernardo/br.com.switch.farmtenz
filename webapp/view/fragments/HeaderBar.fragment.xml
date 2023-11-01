@@ -10,21 +10,11 @@
 
   <ToolbarSpacer />
 
-  <!-- Change Theme Button -->
   <Button
-    id="btnThemeLigth"
-    tooltip="{i18n>btnChangeTheme}"
-    visible="{homeView>/isLightMode}"
-    press="onChangeTheme"
-    icon="sap-icon://light-mode" />
+    id="btn_config"
+    tooltip="{i18n>btnConfigurations}"
+    press="onShowConfigDialog"
+    icon="sap-icon://settings" />
 
-  <Button
-    id="btnThemeDark"
-    tooltip="{i18n>btnChangeTheme}"
-    visible="{homeView>/isDarkMode}"
-    press="onChangeTheme"
-    icon="sap-icon://dark-mode" />
 
-   
-  
 </core:FragmentDefinition>

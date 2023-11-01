@@ -6,23 +6,28 @@ sap.ui.define([
 
 	return BaseController.extend("br.com.switch.salestem.controller.Home", {
 
-        onInit: function() {
+		onInit: function() {
 			this._oView = this.getView();
 
 			this._oRouter = this.getRouter();
 
-			this._oModel = new JSONModel(this._setOModelView());
-			this._oView.setModel(this._oModel, "homeView");
+			this._oModelView = new JSONModel(this._setOModelView());
+			this._oView.setModel(this._oModelView, "homeView");
+
+
+			this._setLanguage();
 
 			this._checkTheme();
+
+			this._oModelView.setProperty("/Theme", this.sTheme);
 
 			this._oRouter.getRoute("home").attachPatternMatched(this._onRouteMatched, this);
 		},
 
 		_setOModelView: function() {
 			var oModel = {
-				isDarkMode: false,
-				isLightMode: true,
+				Theme: "system",
+				Language: "system"
 			}
 			return oModel;
 		},
@@ -35,29 +40,30 @@ sap.ui.define([
 				this.sTheme = sThemeLocal == "dark" ? "sap_horizon_dark" : "sap_horizon";
 
 				if (sThemeLocal == "dark") {
-					this._oModel.setProperty("/isDarkMode", true);
-					this._oModel.setProperty("/isLightMode", false);
 					this.applyTheme("sap_horizon_dark");
 				} else {
-					this._oModel.setProperty("/isDarkMode", false);
-					this._oModel.setProperty("/isLightMode", true);
 					this.applyTheme("sap_horizon");
 				}
 
 			} else {
 				this.sTheme = sap.ui.getCore().getConfiguration().getTheme();
-	
+
 				if (this.sTheme == "sap_horizon") {
-					this._oModel.setProperty("/isDarkMode", false);
-					this._oModel.setProperty("/isLightMode", true);
+					this._oModelView.setProperty("/isDarkMode", false);
+					this._oModelView.setProperty("/isLightMode", true);
 				}
-	
+
 				if (this.sTheme == "sap_horizon_dark") {
-					this._oModel.setProperty("/isDarkMode", true);
-					this._oModel.setProperty("/isLightMode", false);
+					this._oModelView.setProperty("/isDarkMode", true);
+					this._oModelView.setProperty("/isLightMode", false);
 				}
 			}
-			
+
+		},
+
+		_setLanguage: function() {
+			var sLanguage = sap.ui.getCore().getConfiguration().getLanguage();
+			this._oModelView.setProperty("/Language", sLanguage);
 		},
 
 		// VALIDA URL
@@ -74,7 +80,7 @@ sap.ui.define([
 
 			var aInfoLogin = localStorage.getItem("infoLogin");
 			var aInfoRegister = localStorage.getItem("infoRegister");
-			
+
 			if (aInfoLogin != null) {
 				var aLogin = aInfoLogin.split(":");
 				var sEmailLogin = aLogin[0];
@@ -102,20 +108,52 @@ sap.ui.define([
 			}
 		},
 
-		onChangeTheme: function() {
-			if (this.sTheme == "sap_horizon") {
-				this._oModel.setProperty("/isDarkMode", true);
-				this._oModel.setProperty("/isLightMode", false);
+		onChangeSelectTheme: function(oEvent) {
+			var sTheme = oEvent.getSource().getSelectedKey();
 
-				this.applyTheme("sap_horizon_dark");
-				localStorage.setItem("ThemeMode", "dark");
+			if (sTheme == "sap_horizon") {
+				localStorage.setItem("Theme", sTheme);
 			} else {
-				this._oModel.setProperty("/isDarkMode", false);
-				this._oModel.setProperty("/isLightMode", true);
-
-				this.applyTheme("sap_horizon");
-				localStorage.setItem("ThemeMode", "light");
+				localStorage.setItem("Theme", sTheme);
 			}
 		},
+
+		onChangeSelectLanguage: function(oEvent) {
+			var sLanguage = oEvent.getSource().getSelectedKey();
+			localStorage.setItem("Language", sLanguage);
+		},
+
+		onShowConfigDialog: function() {
+			// create dialog lazily
+			this.pDialog ??= this.loadFragment({
+				name: "br.com.switch.salestem.view.fragments.ConfigDialog"
+			});
+			this.pDialog.then((oDialog) => oDialog.open())
+		},
+
+		onSaveConfig: function() {
+			let sTheme = this._oModelView.getProperty("/Theme");
+			let sLanguage = this._oModelView.getProperty("/Language");
+
+			if (sTheme == "system") {
+				sTheme = this.getSystemTheme();
+			}
+
+			if (sLanguage == "system") {
+				sLanguage = this.getSystemLanguage();
+			}
+
+			this.applyTheme(sTheme);
+			this.applyLanguage(sLanguage);
+		},
+
+		onCloseConfigDialog: function() {
+			// reset the values of the config dialog
+			this.byId("dialog_config").close();
+
+			this._oModelView.setProperty("/Theme", this.getSystemTheme());
+			this._oModelView.setProperty("/Language", this.getSystemLanguage());
+		},
+
     });
 });

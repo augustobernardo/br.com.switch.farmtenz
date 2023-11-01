@@ -57,6 +57,8 @@ sap.ui.define([
 				let sEmail = this._oModelView.getProperty("/RegisterForm/Email");
 				let sConfirmPassword = this._oModelView.getProperty("/RegisterForm/PasswordConfirm");
 
+				this._oView.setBusy(true);
+
 				let sTokenEmail = btoa(sEmail);
 				let sTokenPassword = btoa(sPassword);
 
@@ -66,10 +68,12 @@ sap.ui.define([
 				this.setCookie(sCookieName, sCookieValue, iDays);
 
 				localStorage.setItem("infoRegister", sTokenEmail+":"+sTokenPassword);
-				
+
                 this.navTo("home", {
                     token: sCookieValue+":"+sTokenGen,
                 }, true);
+
+				this._oView.setBusy(false);
 			}
 		},
 

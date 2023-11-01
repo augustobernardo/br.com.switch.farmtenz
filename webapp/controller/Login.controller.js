@@ -13,7 +13,7 @@ sap.ui.define([
             this._oModelView = new JSONModel(this._setOModelView());
             this._oView.setModel(this._oModelView, "loginModel");
 
-            
+
             this.setFocus("input_email");
         },
 
@@ -51,13 +51,15 @@ sap.ui.define([
                 let sEmail = this._oModelView.getProperty("/LoginForm/Email");
                 let bRememberMe = this._oModelView.getProperty("/LoginForm/RememberMe");
 
+				this._oView.setBusy(true);
+
                 let sTokenEmail = btoa(sEmail);
 				let sTokenPassword = btoa(sPassword);
+				var sCookieValue = btoa(sTokenEmail+":"+sTokenPassword);
 
                 // encrypt the password and save it in a cookie that expires in 7 days
                 if (bRememberMe) {
                     var sCookieName = btoa("rememberMe");
-                    var sCookieValue = btoa(sTokenEmail+":"+sTokenPassword);
                     var iDays = 7;
                     this.setCookie(sCookieName, sCookieValue, iDays);
                 }
@@ -69,9 +71,11 @@ sap.ui.define([
                 this.navTo("home", {
                     token: sCookieValue+":"+sTokenGen,
                 }, true);
+
+				this._oView.setBusy(false);
             }
         },
-		
+
         onSubmitLogin: function() {
             this.onLogin();
         },
