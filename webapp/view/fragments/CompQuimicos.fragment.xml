@@ -1,0 +1,123 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core">
+
+
+  <Page id="page_comp_qui" showHeader="false" class="sapUiResponsiveContentPadding">
+
+    <content>
+      <VBox id="vbox_comp_qui_content">
+
+        <VBox id="vbox_title" class="sapUiMediumMarginBottom">
+          <Title
+            text="{i18n>sideBar.chemicalComponents}"
+            level="H3"
+            titleStyle="H3"
+            class="sapUiTinyMarginTopBottom"/>
+        </VBox>
+
+        <VBox id="vbox_table_comp_qui">
+
+          <Table
+            id="table_comp_qui"
+            items="{homeView>/TableCompQui/Items}"
+            noDataText="{i18n>table.noData.chemicalComp}">
+
+
+            <headerToolbar>
+              <OverflowToolbar >
+                <Title text="Lista de Componentes Químicos" level="H2"/>
+
+                <ToolbarSpacer/>
+
+                <Button
+                  tooltip="Sort"
+                  icon="sap-icon://sort"
+                  press="handleSortButtonPressed"/>
+              </OverflowToolbar>
+            </headerToolbar>
+
+            <columns>
+              <Column>
+                <Text text="{i18n>table.column.chemicalComp.name}"/>
+              </Column>
+              <Column>
+                <Text text="{i18n>table.column.chemicalComp.formula}"/>
+              </Column>
+            </columns>
+
+            <items>
+              <ColumnListItem>
+                <cells>
+                  <Text text="{homeView>Name}"/>
+                  <Text text="{homeView>Formula}"/>
+                </cells>
+              </ColumnListItem>
+            </items>
+          </Table>
+
+          <!-- <table:Table
+            id="table_comp_qui"
+            selectionMode="None"
+            noData="{i18n>table.noData.chemicalComp}">
+
+            <table:extension>
+              <OverflowToolbar style="Clear">
+
+
+                <ToolbarSpacer />
+
+                <Button
+                  icon="sap-icon://clear-filter"
+                  tooltip="{i18n>clearAllFilters}"
+                  press="onClearAllFilters"/>
+
+                <ToolbarSeparator/>
+
+                <SearchField
+                  placeholder="{i18n>searchField.placeholder}"
+                  width="35%"
+                  value="{homeView>/Ui/TableCompQui/FiltroGlobal}"
+                  search="filterGlobally" />
+
+              </OverflowToolbar>
+            </table:extension>
+
+            <table:columns>
+
+              <table:Column
+                id="table_comp_qui_col_name"
+                sortProperty="Name"
+                filterProperty="Name">
+
+                <Label text="{i18n>table.column.chemicalComp.name}"/>
+                <table:template>
+                  <Text text="{Name}"/>
+                </table:template>
+
+              </table:Column>
+
+              <table:Column
+                id="table_comp_qui_col_formula"
+                sortProperty="Formula"
+                filterProperty="Formula">
+
+                <Label text="{i18n>table.column.chemicalComp.formula}"/>
+                <table:template>
+                  <Text text="{Formula}"/>
+                </table:template>
+
+              </table:Column>
+
+            </table:columns>
+
+          </table:Table> -->
+        </VBox>
+
+
+      </VBox>
+    </content>
+
+  </Page>
+
+</c:FragmentDefinition>

@@ -13,9 +13,17 @@ sap.ui.define([
             this._oModelView = new JSONModel(this._setOModelView());
             this._oView.setModel(this._oModelView, "loginModel");
 
+			this._oRouter.getRoute("login").attachPatternMatched(this.onRouteMatched, this);
 
             this.setFocus("input_email");
         },
+
+		onRouteMatched: function(oEvent) {
+			localStorage.removeItem("infoLogin");
+			this._oModelView.setProperty("/LoginForm/Email", "");
+			this._oModelView.setProperty("/LoginForm/Password", "");
+			this._oModelView.setProperty("/LoginForm/RememberMe", false);
+		},
 
         onAfterRendering: function() {
 			this.resetFieldsState("login_form");
@@ -64,12 +72,11 @@ sap.ui.define([
                     this.setCookie(sCookieName, sCookieValue, iDays);
                 }
 
-                let sTokenGen = this.generateToken();
 
                 localStorage.setItem("infoLogin", sTokenEmail+":"+sTokenPassword);
 
                 this.navTo("home", {
-                    token: sCookieValue+":"+sTokenGen,
+                    token: sTokenEmail+":"+sTokenPassword,
                 }, true);
 
 				this._oView.setBusy(false);

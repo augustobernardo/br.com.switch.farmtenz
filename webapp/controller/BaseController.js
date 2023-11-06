@@ -173,17 +173,6 @@ sap.ui.define([
 			document.cookie = `${sName}=${sValue};${sExpires};path=/`;
 		},
 
-		generateToken: function() {
-			let sToken = "";
-			let sCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-			let iCharactersLength = sCharacters.length;
-
-			for (let i = 0; i < 32; i++) {
-				sToken += sCharacters.charAt(Math.floor(Math.random() * iCharactersLength));
-			}
-			return sToken;
-		},
-
 		resetFieldsState: function(sFormId) {
 			let oVBox = this.byId(sFormId);
 

@@ -75,7 +75,7 @@
 					"target": "NotFound"
 				},
 				{
-					"pattern": "home/{token}",
+					"pattern": "{token}/home",
 					"name": "home",
 					"target": "home"
 				}

@@ -1,7 +1,13 @@
 sap.ui.define([
 	"br/com/switch/salestem/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
-], function(BaseController, JSONModel) {
+	"sap/m/MessageBox",
+	"sap/ui/core/Fragment",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+	"sap/ui/model/Sorter",
+	"sap/ui/Device"
+], function(BaseController, JSONModel, MessageBox, Fragment, Filter, FilterOperator, Sorter, Device) {
 	"use strict";
 
 	return BaseController.extend("br.com.switch.salestem.controller.Home", {
@@ -11,9 +17,10 @@ sap.ui.define([
 
 			this._oRouter = this.getRouter();
 
+			this._mViewSettingsDialogs = {};
+
 			this._oModelView = new JSONModel(this._setOModelView());
 			this._oView.setModel(this._oModelView, "homeView");
-
 
 			this._setLanguage();
 
@@ -27,7 +34,11 @@ sap.ui.define([
 		_setOModelView: function() {
 			var oModel = {
 				Theme: "system",
-				Language: "system"
+				Language: "system",
+				Pages: {
+					VisibleHome: true,
+					VisibleCompQuimicos: false,
+				}
 			}
 			return oModel;
 		},
@@ -70,41 +81,30 @@ sap.ui.define([
 		_onRouteMatched: function(oEvent) {
 			var oArgs = oEvent.getParameter("arguments");
 			var sToken = oArgs.token;
-			var aToken = sToken.split(":");
+			var sTokenLogin = localStorage.getItem("infoLogin");
+			var sTokenRegister = localStorage.getItem("infoRegister");
 
-			var sCookieToken = atob(aToken[0]);
-			var aCookieToken = sCookieToken.split(":");
+			if (sToken != null) {
 
-			var sEmail = atob(aCookieToken[0]);
-			var sPassword = atob(aCookieToken[1]);
-
-			var aInfoLogin = localStorage.getItem("infoLogin");
-			var aInfoRegister = localStorage.getItem("infoRegister");
-
-			if (aInfoLogin != null) {
-				var aLogin = aInfoLogin.split(":");
-				var sEmailLogin = aLogin[0];
-				var sPasswordLogin = aLogin[1];
-
-				if (atob(sEmailLogin) == sEmail && atob(sPasswordLogin) == sPassword) {
-					return;
-				} else {
+				if (sTokenLogin != null && sToken != sTokenLogin) {
 					this._oRouter.navTo("login", {}, {});
 					return;
 				}
-			}
 
-			if (aInfoRegister != null) {
-				var aRegister = aInfoRegister.split(":");
-				var sEmailRegister = aRegister[0];
-				var sPasswordRegister = aRegister[1];
-
-				if (atob(sEmailRegister) == sEmail && atob(sPasswordRegister) == sPassword) {
-					return;
-				} else {
+				if (sTokenRegister != null && sToken != sTokenRegister) {
 					this._oRouter.navTo("login", {}, {});
 					return;
 				}
+				return;
+			} else {
+				MessageBox.error(this.getResourceBundle().getText("msgBox.invalidToken"), {
+					title: this.getResourceBundle().getText("msgBox.invalidTokenTitle"),
+					onClose: function(oAction) {
+						localStorage.removeItem("infoLogin");
+						localStorage.removeItem("infoRegister");
+						this._oRouter.navTo("login", {}, {});
+					}
+				});
 			}
 		},
 
@@ -155,5 +155,99 @@ sap.ui.define([
 			this._oModelView.setProperty("/Language", this.getSystemLanguage());
 		},
 
+
+		onShowHome: function() {
+			this._oModelView.setProperty("/Pages/VisibleHome", true);
+			this._oModelView.setProperty("/Pages/VisibleCompQuimicos", false);
+		},
+
+		onShowCompQuimicos: function() {
+			this._oModelView.setProperty("/Pages/VisibleHome", false);
+			this._oModelView.setProperty("/Pages/VisibleCompQuimicos", true);
+		},
+
+
+		/* COMP. QUÍMICOS */
+
+		getViewSettingsDialog: function (sDialogFragmentName) {
+			var pDialog = this._mViewSettingsDialogs[sDialogFragmentName];
+
+			if (!pDialog) {
+				pDialog = Fragment.load({
+					id: this.getView().getId(),
+					name: sDialogFragmentName,
+					controller: this
+				}).then(function (oDialog) {
+					if (Device.system.desktop) {
+						oDialog.addStyleClass("sapUiSizeCompact");
+					}
+					return oDialog;
+				});
+				this._mViewSettingsDialogs[sDialogFragmentName] = pDialog;
+			}
+			return pDialog;
+		},
+
+		handleSortButtonPressed: function () {
+			this.getViewSettingsDialog("br.com.switch.salestem.view.fragments.SortDialog")
+				.then(function (oViewSettingsDialog) {
+					oViewSettingsDialog.open();
+				});
+		},
+
+		handleSortDialogConfirm: function (oEvent) {
+			var oTable = this.byId("table_comp_qui");
+			var	mParams = oEvent.getParameters();
+			var	oBinding = oTable.getBinding("items");
+			var	sPath;
+			var	bDescending;
+			var	aSorters = [];
+
+			sPath = mParams.sortItem.getKey();
+			bDescending = mParams.sortDescending;
+			aSorters.push(new Sorter(sPath, bDescending));
+
+			// apply the selected sort and group settings
+			oBinding.sort(aSorters);
+		},
+
+
+		// _filter: function() {
+		// 	var oFilter = null;
+
+		// 	if (this._oGlobalFilter) {
+		// 		oFilter = this._oGlobalFilter;
+		// 	}
+		// 	this.byId("table_comp_qui").getBinding().filter(oFilter, "Application");
+		// },
+
+		// filterGlobally: function(oEvent) {
+		// 	var sQuery = oEvent.getParameter("query");
+		// 	this._oGlobalFilter = null;
+
+		// 	if (sQuery) {
+		// 		this._oGlobalFilter = new Filter([
+		// 			new Filter("NomeCompQui", FilterOperator.Contains, sQuery),
+		// 			new Filter("FormulaCompQui", FilterOperator.Contains, sQuery)
+		// 		], false);
+		// 	}
+
+		// 	this._filter();
+		// },
+
+		// onClearAllFilters: function(oEvent) {
+		// 	var oTable = this.byId("table_comp_qui");
+
+		// 	var oUiModel = this.getView().getModel("ui");
+		// 	oUiModel.setProperty("/Ui/TableCompQui/FiltroGlobal", "");
+
+		// 	this._oGlobalFilter = null;
+		// 	this._filter();
+
+		// 	var aColumns = oTable.getColumns();
+		// 	for (var i = 0; i < aColumns.length; i++) {
+		// 		oTable.filter(aColumns[i], null);
+		// 	}
+		// },
     });
 });

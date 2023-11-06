@@ -6,25 +6,23 @@
     <tnt:NavigationList>
 
       <tnt:NavigationListItem
-        id="homeItem"
+        id="navListItem_home"
+        text="{i18n>sideBar.home}"
         key="home"
-        text="Home"
+        select="onShowHome"
         icon="sap-icon://home" />
 
       <tnt:NavigationListItem
-        id="teste2"
-        text="Item 2"
-        icon="sap-icon://building" />
+        id="navListItem_compQuimicos"
+        text="{i18n>sideBar.chemicalComponents}"
+        icon="sap-icon://lab"
+        select="onShowCompQuimicos"
+        key="compQuimicos" />
 
     </tnt:NavigationList>
 
     <tnt:fixedItem>
       <tnt:NavigationList>
-
-        <!-- <tnt:NavigationListItem
-          text="{i18n>btnConfigurations}"
-          select="onShowConfigDialog"
-          icon="sap-icon://settings" /> -->
 
         <tnt:NavigationListItem
           text="{i18n>btnLogout}"
@@ -33,6 +31,6 @@
 
       </tnt:NavigationList>
     </tnt:fixedItem>
-  </tnt:SideNavigation>
 
+  </tnt:SideNavigation>
 </core:FragmentDefinition>

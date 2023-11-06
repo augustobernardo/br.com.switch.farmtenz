@@ -1,0 +1,11 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ViewSettingsDialog
+		confirm="handleSortDialogConfirm">
+		<sortItems>
+			<ViewSettingsItem text="{i18n>table.column.chemicalComp.name}" key="Nome" selected="true" />
+			<ViewSettingsItem text="{i18n>table.column.chemicalComp.formula}" key="Formula" />
+		</sortItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>

@@ -13,42 +13,15 @@
     </tnt:header>
 
     <tnt:sideContent >
-      <tnt:SideNavigation 
-        id="sideNavigation" 
-        selectedKey="subItem3" >
-        <tnt:NavigationList>
-
-          <tnt:NavigationListItem
-            id="teste"
-            text="Item 1"
-            icon="sap-icon://employee" />
-
-          <tnt:NavigationListItem
-            id="teste2"
-            text="Item 2"
-            icon="sap-icon://building" />
-
-        </tnt:NavigationList>
-
-        <tnt:fixedItem>
-          <tnt:NavigationList>
-
-            <tnt:NavigationListItem
-              text="{i18n>btnLogout}"
-              icon="sap-icon://log"
-              select="onLogout" />
-
-          </tnt:NavigationList>
-        </tnt:fixedItem>
-
-      </tnt:SideNavigation>
+      <core:Fragment fragmentName="br.com.switch.salestem.view.fragments.SideBar" type="XML" />
     </tnt:sideContent>
 
     <tnt:mainContents>
-        <NavContainer id="pageContainerId" width="100%">
-            <!-- Put the content Here -->
+        <NavContainer id="page_content_comp_quimicos" visible="{homeView>/Pages/VisibleCompQuimicos}">
+          <!-- Put the content Here -->
+          <core:Fragment fragmentName="br.com.switch.salestem.view.fragments.CompQuimicos" type="XML" />
         </NavContainer>
     </tnt:mainContents>
-    
+
   </tnt:ToolPage>
 </mvc:View>
