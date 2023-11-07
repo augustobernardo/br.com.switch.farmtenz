@@ -4,8 +4,8 @@
 	<ViewSettingsDialog
 		confirm="handleSortDialogConfirm">
 		<sortItems>
-			<ViewSettingsItem text="{i18n>table.column.chemicalComp.name}" key="Nome" selected="true" />
-			<ViewSettingsItem text="{i18n>table.column.chemicalComp.formula}" key="Formula" />
+			<ViewSettingsItem text="{i18n>table.column.chemicalComp.name}" key="NomeCompQui" selected="true" />
+			<ViewSettingsItem text="{i18n>table.column.chemicalComp.formula}" key="FormulaCompQui" />
 		</sortItems>
 	</ViewSettingsDialog>
 </core:FragmentDefinition>

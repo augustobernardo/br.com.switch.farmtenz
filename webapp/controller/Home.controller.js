@@ -2,32 +2,27 @@ sap.ui.define([
 	"br/com/switch/salestem/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageBox",
-	"sap/ui/core/Fragment",
-	"sap/ui/model/Filter",
-	"sap/ui/model/FilterOperator",
-	"sap/ui/model/Sorter",
-	"sap/ui/Device"
-], function(BaseController, JSONModel, MessageBox, Fragment, Filter, FilterOperator, Sorter, Device) {
+	"br/com/switch/salestem/model/compQuiHandler"
+], function(BaseController, JSONModel, MessageBox, CompQuiHandler) {
 	"use strict";
 
 	return BaseController.extend("br.com.switch.salestem.controller.Home", {
 
 		onInit: function() {
 			this._oView = this.getView();
-
 			this._oRouter = this.getRouter();
 
 			this._mViewSettingsDialogs = {};
 
 			this._oModelView = new JSONModel(this._setOModelView());
 			this._oView.setModel(this._oModelView, "homeView");
+			
+			this._oView.setBusyIndicatorDelay(0);
 
 			this._setLanguage();
-
 			this._checkTheme();
-
+			
 			this._oModelView.setProperty("/Theme", this.sTheme);
-
 			this._oRouter.getRoute("home").attachPatternMatched(this._onRouteMatched, this);
 		},
 
@@ -38,9 +33,73 @@ sap.ui.define([
 				Pages: {
 					VisibleHome: true,
 					VisibleCompQuimicos: false,
+				},
+				TableCompQui: {
+					Items: [
+						{
+							"NomeCompQui": "Ácido Acético",
+							"FormulaCompQui": "CH3COOH",
+						},
+						{
+							"NomeCompQui": "Ácido Clorídrico",
+							"FormulaCompQui": "HCl",
+						},
+						{
+							"NomeCompQui": "Ácido Fluorídrico",
+							"FormulaCompQui": "HF",
+						},
+						{
+							"NomeCompQui": "Ácido Fosfórico",
+							"FormulaCompQui": "H3PO4",
+						}
+					]
+				},
+				Ui: {
+					TableCompQui: {
+						FiltroGlobal: ""
+					}
 				}
 			}
 			return oModel;
+		},
+
+		/* ========== */
+		/* VALIDA URL */
+		/* ========== */
+		_onRouteMatched: function(oEvent) {
+			var oArgs = oEvent.getParameter("arguments");
+			var sToken = oArgs.token;
+			var sTokenLogin = localStorage.getItem("infoLogin");
+			var sTokenRegister = localStorage.getItem("infoRegister");
+
+			this._oView.setBusy(true);
+
+			if (sToken != null) {
+
+				if (sTokenLogin != null && sToken != sTokenLogin) {
+					this._oView.setBusy(false);
+					this._oRouter.navTo("login", {}, {});
+					return;
+				}
+
+				if (sTokenRegister != null && sToken != sTokenRegister) {
+					this._oView.setBusy(false);
+					this._oRouter.navTo("login", {}, {});
+					return;
+				}
+				this._oView.setBusy(false);
+				return;
+			} else {
+				this._oView.setBusy(false);
+				MessageBox.error(this.getResourceBundle().getText("msgBox.invalidToken"), {
+					title: this.getResourceBundle().getText("msgBox.invalidTokenTitle"),
+					onClose: function(oAction) {
+						localStorage.removeItem("infoLogin");
+						localStorage.removeItem("infoRegister");
+						this._oRouter.navTo("login", {}, {});
+					}
+				});
+			}
 		},
 
 		_checkTheme: function() {
@@ -75,37 +134,6 @@ sap.ui.define([
 		_setLanguage: function() {
 			var sLanguage = sap.ui.getCore().getConfiguration().getLanguage();
 			this._oModelView.setProperty("/Language", sLanguage);
-		},
-
-		// VALIDA URL
-		_onRouteMatched: function(oEvent) {
-			var oArgs = oEvent.getParameter("arguments");
-			var sToken = oArgs.token;
-			var sTokenLogin = localStorage.getItem("infoLogin");
-			var sTokenRegister = localStorage.getItem("infoRegister");
-
-			if (sToken != null) {
-
-				if (sTokenLogin != null && sToken != sTokenLogin) {
-					this._oRouter.navTo("login", {}, {});
-					return;
-				}
-
-				if (sTokenRegister != null && sToken != sTokenRegister) {
-					this._oRouter.navTo("login", {}, {});
-					return;
-				}
-				return;
-			} else {
-				MessageBox.error(this.getResourceBundle().getText("msgBox.invalidToken"), {
-					title: this.getResourceBundle().getText("msgBox.invalidTokenTitle"),
-					onClose: function(oAction) {
-						localStorage.removeItem("infoLogin");
-						localStorage.removeItem("infoRegister");
-						this._oRouter.navTo("login", {}, {});
-					}
-				});
-			}
 		},
 
 		onChangeSelectTheme: function(oEvent) {
@@ -148,13 +176,8 @@ sap.ui.define([
 		},
 
 		onCloseConfigDialog: function() {
-			// reset the values of the config dialog
 			this.byId("dialog_config").close();
-
-			this._oModelView.setProperty("/Theme", this.getSystemTheme());
-			this._oModelView.setProperty("/Language", this.getSystemLanguage());
 		},
-
 
 		onShowHome: function() {
 			this._oModelView.setProperty("/Pages/VisibleHome", true);
@@ -166,88 +189,35 @@ sap.ui.define([
 			this._oModelView.setProperty("/Pages/VisibleCompQuimicos", true);
 		},
 
-
+		/* ============== */
 		/* COMP. QUÍMICOS */
-
-		getViewSettingsDialog: function (sDialogFragmentName) {
-			var pDialog = this._mViewSettingsDialogs[sDialogFragmentName];
-
-			if (!pDialog) {
-				pDialog = Fragment.load({
-					id: this.getView().getId(),
-					name: sDialogFragmentName,
-					controller: this
-				}).then(function (oDialog) {
-					if (Device.system.desktop) {
-						oDialog.addStyleClass("sapUiSizeCompact");
-					}
-					return oDialog;
-				});
-				this._mViewSettingsDialogs[sDialogFragmentName] = pDialog;
-			}
-			return pDialog;
-		},
-
 		handleSortButtonPressed: function () {
-			this.getViewSettingsDialog("br.com.switch.salestem.view.fragments.SortDialog")
+			CompQuiHandler.getViewSettingsDialog("br.com.switch.salestem.view.fragments.SortDialog", this)
 				.then(function (oViewSettingsDialog) {
 					oViewSettingsDialog.open();
 				});
 		},
 
 		handleSortDialogConfirm: function (oEvent) {
-			var oTable = this.byId("table_comp_qui");
-			var	mParams = oEvent.getParameters();
-			var	oBinding = oTable.getBinding("items");
-			var	sPath;
-			var	bDescending;
-			var	aSorters = [];
-
-			sPath = mParams.sortItem.getKey();
-			bDescending = mParams.sortDescending;
-			aSorters.push(new Sorter(sPath, bDescending));
-
-			// apply the selected sort and group settings
-			oBinding.sort(aSorters);
+			CompQuiHandler.handleSortDialogConfirm(this.byId("table_comp_qui"), oEvent);			
 		},
 
+		onFilterCompQui: function(oEvent) {
+			CompQuiHandler.setFilterBinding(
+				oEvent.getParameter("query"), 
+				this.byId("table_comp_qui")
+			);
+		},
+		
+		onLCFilterGlobalCompQui: function(oEvent) {
+			CompQuiHandler.setFilterBinding(
+				oEvent.getParameter("newValue"), 
+				this.byId("table_comp_qui")
+			);
+		},
+		/* COMP. QUÍMICOS */
+		/* ============== */
 
-		// _filter: function() {
-		// 	var oFilter = null;
-
-		// 	if (this._oGlobalFilter) {
-		// 		oFilter = this._oGlobalFilter;
-		// 	}
-		// 	this.byId("table_comp_qui").getBinding().filter(oFilter, "Application");
-		// },
-
-		// filterGlobally: function(oEvent) {
-		// 	var sQuery = oEvent.getParameter("query");
-		// 	this._oGlobalFilter = null;
-
-		// 	if (sQuery) {
-		// 		this._oGlobalFilter = new Filter([
-		// 			new Filter("NomeCompQui", FilterOperator.Contains, sQuery),
-		// 			new Filter("FormulaCompQui", FilterOperator.Contains, sQuery)
-		// 		], false);
-		// 	}
-
-		// 	this._filter();
-		// },
-
-		// onClearAllFilters: function(oEvent) {
-		// 	var oTable = this.byId("table_comp_qui");
-
-		// 	var oUiModel = this.getView().getModel("ui");
-		// 	oUiModel.setProperty("/Ui/TableCompQui/FiltroGlobal", "");
-
-		// 	this._oGlobalFilter = null;
-		// 	this._filter();
-
-		// 	var aColumns = oTable.getColumns();
-		// 	for (var i = 0; i < aColumns.length; i++) {
-		// 		oTable.filter(aColumns[i], null);
-		// 	}
-		// },
+		
     });
 });
