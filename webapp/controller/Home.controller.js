@@ -16,12 +16,12 @@ sap.ui.define([
 
 			this._oModelView = new JSONModel(this._setOModelView());
 			this._oView.setModel(this._oModelView, "homeView");
-			
+
 			this._oView.setBusyIndicatorDelay(0);
 
 			this._setLanguage();
 			this._checkTheme();
-			
+
 			this._oModelView.setProperty("/Theme", this.sTheme);
 			this._oRouter.getRoute("home").attachPatternMatched(this._onRouteMatched, this);
 		},
@@ -35,29 +35,17 @@ sap.ui.define([
 					VisibleCompQuimicos: false,
 				},
 				TableCompQui: {
-					Items: [
-						{
-							"NomeCompQui": "Ácido Acético",
-							"FormulaCompQui": "CH3COOH",
-						},
-						{
-							"NomeCompQui": "Ácido Clorídrico",
-							"FormulaCompQui": "HCl",
-						},
-						{
-							"NomeCompQui": "Ácido Fluorídrico",
-							"FormulaCompQui": "HF",
-						},
-						{
-							"NomeCompQui": "Ácido Fosfórico",
-							"FormulaCompQui": "H3PO4",
-						}
-					]
+					Items: []
 				},
 				Ui: {
 					TableCompQui: {
 						FiltroGlobal: ""
 					}
+				},
+				NewCompQui: {
+					NomeComp: "",
+					Formula: "",
+					FormaMedidaCompQui: "",
 				}
 			}
 			return oModel;
@@ -199,25 +187,50 @@ sap.ui.define([
 		},
 
 		handleSortDialogConfirm: function (oEvent) {
-			CompQuiHandler.handleSortDialogConfirm(this.byId("table_comp_qui"), oEvent);			
+			CompQuiHandler.handleSortDialogConfirm(this.byId("table_comp_qui"), oEvent);
 		},
 
 		onFilterCompQui: function(oEvent) {
 			CompQuiHandler.setFilterBinding(
-				oEvent.getParameter("query"), 
+				oEvent.getParameter("query"),
 				this.byId("table_comp_qui")
 			);
 		},
-		
+
 		onLCFilterGlobalCompQui: function(oEvent) {
 			CompQuiHandler.setFilterBinding(
-				oEvent.getParameter("newValue"), 
+				oEvent.getParameter("newValue"),
 				this.byId("table_comp_qui")
 			);
 		},
+
+		onShowCreateCompDialog: function(oEvent) {
+			this.pDialogCreateComp ??= this.loadFragment({
+				name: "br.com.switch.salestem.view.fragments.CreateCompDialog"
+			});
+			this.pDialogCreateComp.then((oDialog) => oDialog.open())
+		},
+
+		onPressCreateCompQui: function (oEvent) {
+			CompQuiHandler.createCompQui(this);
+			this.onPressCancelCreateCompQui();
+		},
+
+		onSubmitCreateQuiForm: function(oEvent) {
+			CompQuiHandler.createCompQui(this);
+			this.onPressCancelCreateCompQui();
+		},
+
+		onPressCancelCreateCompQui: function () {
+			this.byId("dialog_create_comp_qui").close();
+			this._oModelView.setProperty("/NewCompQui/NomeComp", "");
+			this._oModelView.setProperty("/NewCompQui/Formula", "");
+			this._oModelView.setProperty("/NewCompQui/FormaMedidaCompQui", "");
+		},
+
 		/* COMP. QUÍMICOS */
 		/* ============== */
 
-		
+
     });
 });

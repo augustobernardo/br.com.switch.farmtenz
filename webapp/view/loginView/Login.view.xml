@@ -46,7 +46,8 @@
                 type="Email"
                 submit="onSubmitLogin"
                 liveChange="onLiveChangeEmail"
-                value="{loginModel>/LoginForm/Email}" />
+                value="{loginModel>/LoginForm/Email}"
+                class="sapUiSmallMarginBottom" />
 
               <!-- PASSWORD -->
               <Label

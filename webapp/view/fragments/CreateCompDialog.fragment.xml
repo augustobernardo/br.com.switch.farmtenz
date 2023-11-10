@@ -1,0 +1,64 @@
+<c:FragmentDefinition xmlns:form="sap.ui.layout.form"
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core">
+
+  <Dialog id="dialog_create_comp_qui" title="{i18n>dialog.crateCompQui.title}">
+    
+    <content>
+      <form:SimpleForm >
+
+        <Label 
+          id="lbl_create_comp_qui_name"
+          text="{i18n>table.column.chemicalComp.name}" 
+          required="true" />
+
+        <Input
+          id="inp_create_comp_qui_name"
+          value="{homeView>/NewCompQui/NomeComp}"
+          required="true" />
+
+        <Label
+          id="lbl_create_comp_qui_formula"
+          text="{i18n>table.column.chemicalComp.formula}" 
+          required="true"/>
+
+        <Input
+          id="inp_create_comp_qui_formula"
+          value="{homeView>/NewCompQui/Formula}"
+          submit=".onSubmitCreateQuiForm"
+          required="true" />
+
+        <Label
+          id="lbl_create_comp_qui_measure"
+          text="{i18n>table.column.chemicalComp.formaMedida}" 
+          required="true"/>
+
+        <Select
+          id="sel_create_comp_qui_measure"
+          selectedKey="{homeView>/NewCompQui/FormaMedidaCompQui}"
+          required="true">
+          <c:Item key="0" text="{i18n>select.item.measure.grama}"/>
+          <c:Item key="1" text="{i18n>select.item.measure.mililitro}"/>
+        </Select>
+      </form:SimpleForm>
+    </content>
+
+    <buttons>
+
+      <Button id="btn_create_comp_qui"
+        text="{i18n>btn.create}"
+        type="Emphasized"
+        press="onPressCreateCompQui"
+        icon="sap-icon://create" />
+
+      <Button
+        id="btn_cancel_create_comp_qui"
+        text="{i18n>btn.cancel}"
+        press="onPressCancelCreateCompQui"
+        icon="sap-icon://decline" />
+        
+    </buttons>
+
+  </Dialog>
+
+</c:FragmentDefinition>

@@ -57,6 +57,9 @@
             <Column>
               <Text text="{i18n>table.column.chemicalComp.formula}"/>
             </Column>
+            <Column>
+              <Text text="{i18n>table.column.chemicalComp.formaMedida}"/>
+            </Column>
           </columns>
 
           <items>
@@ -64,6 +67,7 @@
               <cells>
                 <Text text="{homeView>NomeCompQui}"/>
                 <Text text="{homeView>FormulaCompQui}"/>
+                <Text text="{homeView>FormaMedidaCompQui}"/>
               </cells>
             </ColumnListItem>
           </items>
@@ -137,7 +141,7 @@
           tooltip="{i18n>btn.create.chemicalComp}"
           type="Emphasized"
           icon="sap-icon://add"
-          press="onCreateCompQui"/>
+          press="onShowCreateCompDialog"/>
       </Toolbar>
     </footer>
   </Page>

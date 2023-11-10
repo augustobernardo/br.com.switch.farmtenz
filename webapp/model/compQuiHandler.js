@@ -69,5 +69,96 @@ sap.ui.define([
 			}
 			return pDialog;
 		},
+
+		/**
+		 * Load the Fragment
+		 * @param {Object} _this - Controller of the View
+		 */
+		createCompQui: function(_this) {
+			var oInputNomeComp = _this.byId("inp_create_comp_qui_name");
+			var oInputFormula = _this.byId("inp_create_comp_qui_formula");
+			var oSelectMeasure = _this.byId("sel_create_comp_qui_measure");
+			var sNomeComp = _this._oModelView.getProperty("/NewCompQui/NomeComp");
+			var sFormula = _this._oModelView.getProperty("/NewCompQui/Formula");
+			var sFormaMedida = oSelectMeasure.getSelectedItem().getText();
+
+			_this._oView.setBusy(true);
+
+			if (sNomeComp == "" || sFormula == "") {
+				_this._oView.setBusy(false);
+				if (sNomeComp == "") {
+					oInputNomeComp.setValueState("Error");
+				}
+				
+				if (sFormula == "") {
+					oInputFormula.setValueState("Error");
+				}
+				oInputNomeComp.setValueState("Error");
+				oInputFormula.setValueState("Error");
+				return;
+			}
+
+			oInputNomeComp.setValueState("None");
+			oInputFormula.setValueState("None");
+
+			var oTable = _this.byId("table_comp_qui");
+			var oBinding = oTable.getBinding("items");
+			var sPath = oBinding.getPath();
+			
+			var oNewCompQui = {
+				"NomeCompQui": sNomeComp,
+				"FormulaCompQui": sFormula,
+				"FormaMedidaCompQui": sFormaMedida
+			}
+
+			if (this._checkCompQuiExists(_this, oNewCompQui, oBinding.getModel().getProperty(sPath))) {
+				_this._oView.setBusy(false);
+				sap.m.MessageToast.show(_this.getResourceBundle().getText("compQuiAlreadyExists"));
+				return;
+			} else {
+				var oModel = oBinding.getModel();
+				var aItems = oModel.getProperty(sPath);
+				
+				aItems.push(oNewCompQui);
+				oModel.setProperty(sPath, aItems);
+				oModel.refresh(true);
+	
+				_this._oModelView.setProperty("/NewCompQui/NomeComp", "");
+				_this._oModelView.setProperty("/NewCompQui/Formula", "");
+				_this._oModelView.setProperty("/NewCompQui/FormaMedidaCompQui", "");
+			}
+
+			_this._oView.setBusy(false);
+		},
+
+		_checkCompQuiExists: function(_this, oEntry, aTableItems) {
+			var bExists = false;
+			var oEntryAux = this._toUpperCaseObjectValues(oEntry);
+
+			for (var i = 0; i < aTableItems.length; i++) {
+				var oItem = this._toUpperCaseObjectValues(aTableItems[i]);
+
+				if (oEntryAux.NomeCompQui == oItem.NomeCompQui 
+					&& oEntryAux.FormulaCompQui == oItem.FormulaCompQui 
+					&& oEntryAux.FormaMedidaCompQui == oItem.FormaMedidaCompQui) {
+					bExists = true;
+					break;
+				}
+			}
+			
+			return bExists;
+		},
+
+		_toUpperCaseObjectValues: function(oObject) {
+			const oObjectAux = oObject;
+			const oObjectFinal = {};
+
+			for (const sKey in oObject) {
+				if (oObjectAux.hasOwnProperty(sKey)) {
+					oObjectFinal[sKey] = oObjectAux[sKey].toUpperCase();
+				}
+			}
+			return oObjectFinal;
+		}
 	};
 });
