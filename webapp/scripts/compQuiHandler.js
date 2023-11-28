@@ -3,8 +3,9 @@ sap.ui.define([
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 	"sap/ui/core/Fragment",
-	"sap/ui/Device"
-],function(Sorter, Filter, FilterOperator, Fragment, Device) {
+	"sap/ui/Device",
+	"sap/ui/core/ValueState"
+],function(Sorter, Filter, FilterOperator, Fragment, Device, ValueState) {
 	"use strict";
 
 	return {
@@ -20,7 +21,7 @@ sap.ui.define([
 			if (sValue) {
 				aFilters.push(new Filter("NomeCompQui", FilterOperator.Contains, sValue));
 			}
-			var oBinding = oTable.getBinding("items");
+			var oBinding = oTable.getBinding();
 			oBinding.filter(aFilters);
 		},
 
@@ -31,7 +32,7 @@ sap.ui.define([
 		 */
 		handleSortDialogConfirm: function(oTable, oEvent) {
 			var mParams = oEvent.getParameters();
-			var oBinding = oTable.getBinding("items");
+			var oBinding = oTable.getBinding();
 			var sPath;
 			var bDescending;
 			var aSorters = [];
@@ -78,31 +79,27 @@ sap.ui.define([
 			var oInputNomeComp = _this.byId("inp_create_comp_qui_name");
 			var oInputFormula = _this.byId("inp_create_comp_qui_formula");
 			var oSelectMeasure = _this.byId("sel_create_comp_qui_measure");
-			var sNomeComp = _this._oModelView.getProperty("/NewCompQui/NomeComp");
-			var sFormula = _this._oModelView.getProperty("/NewCompQui/Formula");
+			var sNomeComp = _this._oModelViewCompQui.getProperty("/NewCompQui/NomeComp");
+			var sFormula = _this._oModelViewCompQui.getProperty("/NewCompQui/Formula");
 			var sFormaMedida = oSelectMeasure.getSelectedItem().getText();
 
 			_this._oView.setBusy(true);
 
-			if (sNomeComp == "" || sFormula == "") {
-				_this._oView.setBusy(false);
-				if (sNomeComp == "") {
-					oInputNomeComp.setValueState("Error");
+			if (sNomeComp === "" || sFormula === "") {
+				if (sNomeComp === "") {
+					_this._oModelViewCompQui.setProperty("/StateControl/NomeCompState", ValueState.Error);
 				}
-				
-				if (sFormula == "") {
-					oInputFormula.setValueState("Error");
+				if (sFormula === "") {
+					_this._oModelViewCompQui.setProperty("/StateControl/FormulaState", ValueState.Error);
 				}
-				oInputNomeComp.setValueState("Error");
-				oInputFormula.setValueState("Error");
-				return;
+				return;				
 			}
 
-			oInputNomeComp.setValueState("None");
-			oInputFormula.setValueState("None");
+			_this._oModelViewCompQui.setProperty("/StateControl/NomeCompState", ValueState.None);
+			_this._oModelViewCompQui.setProperty("/StateControl/FormulaState", ValueState.None);
 
 			var oTable = _this.byId("table_comp_qui");
-			var oBinding = oTable.getBinding("items");
+			var oBinding = oTable.getBinding();
 			var sPath = oBinding.getPath();
 			
 			var oNewCompQui = {
@@ -123,11 +120,8 @@ sap.ui.define([
 				oModel.setProperty(sPath, aItems);
 				oModel.refresh(true);
 	
-				_this._oModelView.setProperty("/NewCompQui/NomeComp", "");
-				_this._oModelView.setProperty("/NewCompQui/Formula", "");
-				_this._oModelView.setProperty("/NewCompQui/FormaMedidaCompQui", "");
+				_this._oModelViewCompQui.setData(_this._setOModelViewCompQui());
 			}
-
 			_this._oView.setBusy(false);
 		},
 
@@ -145,7 +139,6 @@ sap.ui.define([
 					break;
 				}
 			}
-			
 			return bExists;
 		},
 

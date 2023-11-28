@@ -2,7 +2,7 @@ sap.ui.define([
 	"br/com/switch/salestem/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageBox",
-	"br/com/switch/salestem/model/compQuiHandler"
+	"br/com/switch/salestem/scripts/compQuiHandler"
 ], function(BaseController, JSONModel, MessageBox, CompQuiHandler) {
 	"use strict";
 
@@ -16,6 +16,12 @@ sap.ui.define([
 
 			this._oModelView = new JSONModel(this._setOModelView());
 			this._oView.setModel(this._oModelView, "homeView");
+
+			this._oModelViewCompQui = new JSONModel(this._setOModelViewCompQui());
+			this._oView.setModel(this._oModelViewCompQui, "compQuiView");
+
+			this._oModelViewTableCompQui = new JSONModel(this._setOModelViewTableCompQui());
+			this._oView.setModel(this._oModelViewTableCompQui, "compQuiTable");
 
 			this._oView.setBusyIndicatorDelay(0);
 
@@ -34,6 +40,27 @@ sap.ui.define([
 					VisibleHome: true,
 					VisibleCompQuimicos: false,
 				},
+			}
+			return oModel;
+		},
+
+		_setOModelViewCompQui: function() {
+			var oModelCompQui = {
+				NewCompQui: {
+					NomeComp: "",
+					Formula: "",
+					FormaMedidaCompQui: "",
+				},
+				StateControl: {
+					NomeCompState: "None",
+					FormulaState: "None",
+				},
+			}
+			return oModelCompQui;
+		},
+
+		_setOModelViewTableCompQui: function() {
+			var oModelTable = {
 				TableCompQui: {
 					Items: []
 				},
@@ -42,13 +69,8 @@ sap.ui.define([
 						FiltroGlobal: ""
 					}
 				},
-				NewCompQui: {
-					NomeComp: "",
-					Formula: "",
-					FormaMedidaCompQui: "",
-				}
 			}
-			return oModel;
+			return oModelTable;
 		},
 
 		/* ========== */
@@ -223,11 +245,8 @@ sap.ui.define([
 
 		onPressCancelCreateCompQui: function () {
 			this.byId("dialog_create_comp_qui").close();
-			this._oModelView.setProperty("/NewCompQui/NomeComp", "");
-			this._oModelView.setProperty("/NewCompQui/Formula", "");
-			this._oModelView.setProperty("/NewCompQui/FormaMedidaCompQui", "");
+			this._oModelViewCompQui.setData(this._setOModelViewCompQui());
 		},
-
 		/* COMP. QUÍMICOS */
 		/* ============== */
 

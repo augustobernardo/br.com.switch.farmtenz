@@ -1,5 +1,6 @@
 <c:FragmentDefinition
 	xmlns="sap.m"
+  xmlns:table="sap.ui.table"
 	xmlns:c="sap.ui.core">
 
 
@@ -17,97 +18,33 @@
         </VBox>
       </VBox>
 
+      <table:Table
+				id="table_comp_qui"
+				selectionMode="None"
+				rows="{compQuiTable>/TableCompQui/Items}">
+				<table:extension>
+					<OverflowToolbar style="Clear">
+						<Title text="{i18n>table.title.chemicalComp}" level="H2" titleStyle="H4"/>
 
-      <Table 
-        id="table_comp_qui"
-        items="{homeView>/TableCompQui/Items}"
-        noDataText="{i18n>table.noData.chemicalComp}">
-
-          <headerToolbar>
-            <OverflowToolbar>
-              <Title text="{i18n>table.title.chemicalComp}" level="H2"/>
-
-              <ToolbarSpacer/>
-
-              <Button
-                tooltip="{i18n>btn.sort.table}"
-                icon="sap-icon://sort"
-                press="handleSortButtonPressed"/>
-
-              <SearchField
-                placeholder="{i18n>searchField.placeholder}"
-                id="searchField"
-                liveChange=".onLCFilterGlobalCompQui"
-                width="auto"
-                search=".onFilterCompQui" />
-
-            </OverflowToolbar>
-          </headerToolbar>
-
-          <infoToolbar>
-            <OverflowToolbar id="infot_toolbar_comp_qui" visible="false">
-              <Text id="infot_toolbar_comp_qui_label" />
-            </OverflowToolbar>
-          </infoToolbar>
-
-          <columns>
-            <Column>
-              <Text text="{i18n>table.column.chemicalComp.name}"/>
-            </Column>
-            <Column>
-              <Text text="{i18n>table.column.chemicalComp.formula}"/>
-            </Column>
-            <Column>
-              <Text text="{i18n>table.column.chemicalComp.formaMedida}"/>
-            </Column>
-          </columns>
-
-          <items>
-            <ColumnListItem>
-              <cells>
-                <Text text="{homeView>NomeCompQui}"/>
-                <Text text="{homeView>FormulaCompQui}"/>
-                <Text text="{homeView>FormaMedidaCompQui}"/>
-              </cells>
-            </ColumnListItem>
-          </items>
-      </Table>
-
-      <!-- <table:Table
-        id="table_comp_qui"
-        selectionMode="None"
-        rows="{homeView>/TableCompQui/Items}"
-        busyIndicatorDelay="0"
-        noData="{i18n>table.noData.chemicalComp}">
-
-        <table:extension>
-          <OverflowToolbar design="Transparent">
-
-            <ToolbarSpacer/> 
+						<ToolbarSpacer/>
 
             <Button
-              tooltip="Sort"
+              tooltip="{i18n>btn.sort.table}"
               icon="sap-icon://sort"
-              press="sortChemicalCompName"/>
+              press="handleSortButtonPressed"/>
 
-            <Button
-              icon="sap-icon://clear-filter"
-              tooltip="{i18n>clearAllFilters}"
-              press="onCLearAllFilters"/>
-
-            <ToolbarSeparator/>
+						<ToolbarSeparator/>
 
             <SearchField
               placeholder="{i18n>searchField.placeholder}"
-              
-              liveChange="onLiveChangeFilterGlobal"
-              value="{homeView>/Ui/TableCompQui/FiltroGlobal}"
-              search="filterGlobally" />
+              id="searchField"
+              liveChange=".onLCFilterGlobalCompQui"
+              width="auto"
+              search=".onFilterCompQui" />
+					</OverflowToolbar>
+				</table:extension>
+				<table:columns>
 
-          </OverflowToolbar>
-        </table:extension>
-
-        <table:columns>
           <table:Column
             id="table_comp_qui_col_name"
             showSortMenuEntry="false"
@@ -115,7 +52,7 @@
 
             <Label text="{i18n>table.column.chemicalComp.name}"/>
             <table:template>
-              <Text text="{homeView>NomeCompQui}"/>
+              <Text text="{compQuiTable>NomeCompQui}"/>
             </table:template>
           </table:Column>
 
@@ -124,12 +61,21 @@
             showSortMenuEntry="false">
             <Label text="{i18n>table.column.chemicalComp.formula}"/>
             <table:template>
-              <Text text="{homeView>FormulaCompQui}"/>
+              <Text text="{compQuiTable>FormulaCompQui}"/>
+            </table:template>
+          </table:Column>
+
+          <table:Column
+            id="table_comp_qui_col_medida"
+            showSortMenuEntry="false">
+            <Label text="{i18n>table.column.chemicalComp.formaMedida}"/>
+            <table:template>
+              <Text text="{compQuiTable>FormaMedidaCompQui}"/>
             </table:template>
           </table:Column>
 
         </table:columns>
-      </table:Table> -->
+			</table:Table>
 
     </content>
 

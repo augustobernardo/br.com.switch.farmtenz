@@ -14,7 +14,8 @@
 
         <Input
           id="inp_create_comp_qui_name"
-          value="{homeView>/NewCompQui/NomeComp}"
+          value="{compQuiView>/NewCompQui/NomeComp}"
+          valueState="{compQuiView>/StateControl/NomeCompState}"
           required="true" />
 
         <Label
@@ -24,7 +25,8 @@
 
         <Input
           id="inp_create_comp_qui_formula"
-          value="{homeView>/NewCompQui/Formula}"
+          value="{compQuiView>/NewCompQui/Formula}"
+          valueState="{compQuiView>/StateControl/FormulaState}"
           submit=".onSubmitCreateQuiForm"
           required="true" />
 
@@ -35,7 +37,7 @@
 
         <Select
           id="sel_create_comp_qui_measure"
-          selectedKey="{homeView>/NewCompQui/FormaMedidaCompQui}"
+          selectedKey="{compQuiView>/NewCompQui/FormaMedidaCompQui}"
           required="true">
           <c:Item key="0" text="{i18n>select.item.measure.grama}"/>
           <c:Item key="1" text="{i18n>select.item.measure.mililitro}"/>
