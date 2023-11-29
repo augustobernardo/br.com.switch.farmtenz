@@ -41,7 +41,7 @@ sap.ui.define([
 			let bDarkTheme = window.matchMedia("(prefers-color-scheme: dark)");
 			sap.ui.getCore().applyTheme(bDarkTheme.matches ? "sap_horizon_dark" : "sap_horizon");
 		},
-
+		
 		setModel: function (oModel, sName) {
 			this.getView().setModel(oModel, sName);
 			return this;
@@ -225,6 +225,29 @@ sap.ui.define([
 
 		applyLanguage: function(sLanguage) {
 			sap.ui.getCore().getConfiguration().setLanguage(sLanguage);
+		},
+
+		optimizeColumns: function (oEvent) {
+			var that = this;
+
+			//Otimiza colunas
+			if (oEvent.mySmTable) {
+				var oTable = oEvent.mySmTable.getTable();
+				if (oTable) {
+					oEvent.mySmTable.setBusy(true);
+					setTimeout(function () {
+						that.optCols(oTable);
+						oEvent.mySmTable.setBusy(false);
+					}, 1000);
+				}
+			}
+		},
+
+		optCols: function (oTable) {
+			var aColmuns = oTable.getColumns();
+			for (var i = aColmuns.length; i >= 0; i--) {
+				oTable.autoResizeColumn(i);
+			}
 		},
 	});
 });

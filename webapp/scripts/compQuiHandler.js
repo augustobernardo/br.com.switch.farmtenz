@@ -12,6 +12,7 @@ sap.ui.define([
 
 		/**
 		 * Set the Filter for the Table
+		 * @public
 		 * @param {String} sValue - Value to be filtered
 		 * @param {Object} oTable - Table to be filtered
 		 */
@@ -27,6 +28,7 @@ sap.ui.define([
 
 		/**
 		 * Set the Sorter for the Table
+		 * @public
 		 * @param {Object} oTable - Table to be sorted
 		 * @param {Object} oEvent - Event from the Button of Dialog
 		 */
@@ -46,6 +48,7 @@ sap.ui.define([
 
 		/**
 		 * Get the ViewSettingsDialog Fragment
+		 * @public
 		 * @param {String} sDialogFragmentName - Name of the Fragment
 		 * @param {Object} _this - This of the Controller
 		 * @returns {Object} - Fragment
@@ -72,12 +75,11 @@ sap.ui.define([
 		},
 
 		/**
-		 * Load the Fragment
+		 * Create the Chemical Composition
+		 * @public
 		 * @param {Object} _this - Controller of the View
 		 */
 		createCompQui: function(_this) {
-			var oInputNomeComp = _this.byId("inp_create_comp_qui_name");
-			var oInputFormula = _this.byId("inp_create_comp_qui_formula");
 			var oSelectMeasure = _this.byId("sel_create_comp_qui_measure");
 			var sNomeComp = _this._oModelViewCompQui.getProperty("/NewCompQui/NomeComp");
 			var sFormula = _this._oModelViewCompQui.getProperty("/NewCompQui/Formula");
@@ -125,6 +127,14 @@ sap.ui.define([
 			_this._oView.setBusy(false);
 		},
 
+		/**
+		 * Check if the Chemical Composition already exists
+		 * @private
+		 * @param {Object} _this - Controller of the View
+		 * @param {Object} oEntry - Object with the new Chemical Composition
+		 * @param {Array} aTableItems - Array with the Chemical Composition
+		 * @returns {Boolean} - True if the Chemical Composition already exists
+		 */
 		_checkCompQuiExists: function(_this, oEntry, aTableItems) {
 			var bExists = false;
 			var oEntryAux = this._toUpperCaseObjectValues(oEntry);
@@ -142,6 +152,12 @@ sap.ui.define([
 			return bExists;
 		},
 
+		/**
+		 * Convert to Upper Case the Object Values
+		 * @private
+		 * @param {Object} oObject - Object to be converted
+		 * @returns {Object} - Object with the values in Upper Case
+		 */
 		_toUpperCaseObjectValues: function(oObject) {
 			const oObjectAux = oObject;
 			const oObjectFinal = {};
@@ -152,6 +168,84 @@ sap.ui.define([
 				}
 			}
 			return oObjectFinal;
-		}
+		},
+
+		/**
+		 * Edit the line of Chemical Composition
+		 * @public
+		 * @param {Object} oEvent - Event of the Button
+		 * @param {Object} _this - Controller of the View
+		 */
+		editRowCompQui: function(oEvent, _this) {
+			var oRow = oEvent.getSource().getParent();
+			var oRowContext = oRow.getBindingContext("compQuiTable");
+			var oRowObject = oRowContext.getObject();
+			var sSelectedKey = oRowObject.FormaMedidaCompQui.toLocaleLowerCase().trim() === "gramas" ? "0" : "1";
+
+			var oModelEdit = {
+				NomeComp: oRowObject.NomeCompQui,
+				Formula: oRowObject.FormulaCompQui,
+				FormaMedidaCompQui: sSelectedKey,
+			};
+
+			_this._oModelViewCompQui.setProperty("/EditRow", true);
+			_this._oModelViewCompQui.setProperty("/NewCompQui", oModelEdit)
+		},
+
+		/**
+		 * Delete the line of Chemical Composition
+		 * @public
+		 * @param {Object} oEvent - Event of the Button
+		 * @param {Object} _this - Controller of the View
+		 */
+		deleteRowCompQUi: function(oEvent, _this) {
+			var oRow = oEvent.getSource().getParent();
+			var oRowContext = oRow.getBindingContext("compQuiTable");
+			var oRowObject = oRowContext.getObject();
+			
+			var oModelTable = _this._oModelViewTableCompQui.getProperty("/TableCompQui");
+			var oItems = oModelTable.Items;
+			var oIndex = oItems.findIndex(x => x.NomeCompQui === oRowObject.NomeCompQui);
+			
+			oItems.splice(oIndex, 1);
+			_this._oModelViewTableCompQui.setProperty("/TableCompQui/Items", oItems);
+			_this._oModelViewTableCompQui.refresh();
+		},
+
+		/**
+		 * Save the Chemical Composition
+		 * @public
+		 * @param {Object} _this - Controller of the View
+		 */
+		saveEditCompQui: function(_this) {
+			var oRowTable = _this.getView().getModel("compQuiTable").getData().TableCompQui.Items[0];
+			var oEditedCompQui = _this.getView().getModel("compQuiView").getData().NewCompQui;
+
+			var sGrama = _this.getResourceBundle().getText("select.item.measure.grama");
+			var sMililitro = _this.getResourceBundle().getText("select.item.measure.mililitro");
+			var sFormaMedida = oEditedCompQui.FormaMedidaCompQui === "0" ? sGrama : sMililitro;
+
+			var aCompQuiTableData = _this.getView().getModel("compQuiTable");
+			var sPathRowOld = _this.oSelectedRowEditCompQui.oBindingContexts.compQuiTable.sPath;
+			var oRowOld = aCompQuiTableData.getProperty(sPathRowOld);
+
+			var aItems = aCompQuiTableData.getData().TableCompQui.Items;
+			var aItemsNew = aItems.map(function(oItem) {
+				if (oItem.NomeCompQui === oRowOld.NomeCompQui &&
+					oItem.FormulaCompQui === oRowOld.FormulaCompQui &&
+					oItem.FormaMedidaCompQui === oRowOld.FormaMedidaCompQui) {
+					
+					return {
+						"NomeCompQui": oEditedCompQui.NomeComp,
+						"FormulaCompQui": oEditedCompQui.Formula,
+						"FormaMedidaCompQui": sFormaMedida
+					};
+				} else {
+					return oItem;
+				}
+			});
+			aCompQuiTableData.setProperty("/TableCompQui/Items", aItemsNew);
+			aCompQuiTableData.refresh(true);
+		},
 	};
 });

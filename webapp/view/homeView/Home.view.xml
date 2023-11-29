@@ -17,10 +17,14 @@
     </tnt:sideContent>
 
     <tnt:mainContents>
-        <NavContainer id="page_content_comp_quimicos" visible="{homeView>/Pages/VisibleCompQuimicos}">
-          <!-- Put the content Here -->
-          <core:Fragment fragmentName="br.com.switch.salestem.view.fragments.CompQuimicos" type="XML" />
-        </NavContainer>
+      <NavContainer id="page_content_entrada_saida_comp" visible="{homeView>/Pages/VisibleInOutComp}">
+        <core:Fragment fragmentName="br.com.switch.salestem.view.fragments.InputOutputComp" type="XML" />
+      </NavContainer>
+
+      <NavContainer id="page_content_comp_quimicos" visible="{homeView>/Pages/VisibleCompQuimicos}">
+        <core:Fragment fragmentName="br.com.switch.salestem.view.fragments.CompQuimicos" type="XML" />
+      </NavContainer>
+
     </tnt:mainContents>
 
   </tnt:ToolPage>

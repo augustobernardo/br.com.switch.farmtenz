@@ -3,7 +3,6 @@
   xmlns:table="sap.ui.table"
 	xmlns:c="sap.ui.core">
 
-
   <Page id="page_comp_qui" showHeader="false" class="sapUiResponsiveContentPadding">
 
     <content>
@@ -21,6 +20,8 @@
       <table:Table
 				id="table_comp_qui"
 				selectionMode="None"
+        alternateRowColors="true"
+        rowActionCount="1"
 				rows="{compQuiTable>/TableCompQui/Items}">
 				<table:extension>
 					<OverflowToolbar style="Clear">
@@ -43,6 +44,16 @@
               search=".onFilterCompQui" />
 					</OverflowToolbar>
 				</table:extension>
+
+        <table:rowActionTemplate>
+          <table:RowAction >
+            <table:items>
+              <table:RowActionItem icon="sap-icon://edit" text="{i18n>btn.editItem}" press="onEditRowCompQui" />
+              <table:RowActionItem type="Delete" icon="sap-icon://delete" text="{i18n>btn.deleteItem}" press="onDeleteRowCompQui" />
+            </table:items>
+          </table:RowAction>
+        </table:rowActionTemplate>
+
 				<table:columns>
 
           <table:Column

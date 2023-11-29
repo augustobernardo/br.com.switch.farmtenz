@@ -1,0 +1,91 @@
+<c:FragmentDefinition
+	xmlns="sap.m"
+  	xmlns:table="sap.ui.table"
+	xmlns:c="sap.ui.core">
+
+  <Page id="page_home" showHeader="false" class="sapUiResponsiveContentPadding">
+
+    <content>
+      <VBox id="vbox_home_content">
+
+        <VBox id="vbox_home_title" class="sapUiMediumMarginBottom sapUiTinyMarginBegin">
+          <Title
+            text="{i18n>sideBar.inpOutCompQui}"
+            level="H3"
+            titleStyle="H3"
+			wrapping="true"
+            class="sapUiSmallMarginTopBottom"/>
+        </VBox>
+      </VBox>
+
+      <table:Table
+		id="table_home"
+		selectionMode="None"
+		rows="{compQuiTable>/TableCompQui/Items}">
+		<table:extension>
+			<OverflowToolbar style="Clear">
+				<Title text="{i18n>table.title.inpOutCompQui}" wrapping="true" level="H2" titleStyle="H4"/>
+
+				<ToolbarSpacer/>
+
+				<Button
+					tooltip="{i18n>btn.sort.table}"
+					icon="sap-icon://sort"
+					press="handleSortButtonPressed"/>
+
+				<ToolbarSeparator/>
+
+				<SearchField
+					placeholder="{i18n>searchField.placeholder}"
+					id="home_searchField"
+					liveChange=".onLCFilterGlobalCompQui"
+					width="auto"
+					search=".onFilterInpOutCompQui" />
+			</OverflowToolbar>
+		</table:extension>
+			<table:columns>
+				<table:Column
+					id="table_home_col_name"
+					showSortMenuEntry="false"
+					sortProperty="NomeCompQui">
+
+					<Label text="{i18n>table.column.chemicalComp.name}"/>
+					<table:template>
+					<Text text="{compQuiTable>NomeCompQui}"/>
+					</table:template>
+				</table:Column>
+
+				<table:Column
+					id="table_home_col_formula"
+					showSortMenuEntry="false">
+					<Label text="{i18n>table.column.chemicalComp.formula}"/>
+					<table:template>
+					<Text text="{compQuiTable>FormulaCompQui}"/>
+					</table:template>
+				</table:Column>
+
+				<table:Column
+					id="table_home_col_medida"
+					showSortMenuEntry="false">
+					<Label text="{i18n>table.column.chemicalComp.formaMedida}"/>
+					<table:template>
+					<Text text="{compQuiTable>FormaMedidaCompQui}"/>
+					</table:template>
+				</table:Column>
+			</table:columns>
+		</table:Table>
+    </content>
+    <footer>
+      <Toolbar>
+        <ToolbarSpacer/>
+        <Button
+          text="{i18n>btn.create.chemicalComp}"
+          tooltip="{i18n>btn.create.chemicalComp}"
+          type="Emphasized"
+          icon="sap-icon://add"
+          press="onShowCreateCompDialog"/>
+      </Toolbar>
+    </footer>
+  </Page>
+
+</c:FragmentDefinition>

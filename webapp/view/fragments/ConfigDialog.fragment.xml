@@ -3,7 +3,7 @@
 	xmlns:core="sap.ui.core">
 
 
-  <Dialog id="dialog_config" title="{i18n>btnConfigurations}" icon="sap-icon://action-settings" class="sapUiSmallMargin">
+  <Dialog id="dialog_config" title="{i18n>btnConfigurations}" icon="sap-icon://action-settings">
 
     <content>
       <VBox>

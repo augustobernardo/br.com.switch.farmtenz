@@ -2,41 +2,39 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core">
 
-  <Dialog id="dialog_create_comp_qui" title="{i18n>dialog.crateCompQui.title}">
-    
+  <Dialog id="dialog_edit_comp_qui" title="{i18n>dialog.editCompQui.title}">
     <content>
       <form:SimpleForm >
-
         <Label 
-          id="lbl_create_comp_qui_name"
+          id="lbl_edit_comp_qui_name"
           text="{i18n>table.column.chemicalComp.name}" 
           required="true" />
 
         <Input
-          id="inp_create_comp_qui_name"
+          id="inp_edit_comp_qui_name"
           value="{compQuiView>/NewCompQui/NomeComp}"
           valueState="{compQuiView>/StateControl/NomeCompState}"
           required="true" />
 
         <Label
-          id="lbl_create_comp_qui_formula"
+          id="lbl_edit_comp_qui_formula"
           text="{i18n>table.column.chemicalComp.formula}" 
           required="true"/>
 
         <Input
-          id="inp_create_comp_qui_formula"
+          id="inp_edit_comp_qui_formula"
           value="{compQuiView>/NewCompQui/Formula}"
           valueState="{compQuiView>/StateControl/FormulaState}"
-          submit=".onSubmitCreateQuiForm"
+          submit=".onSubmitEditQuiForm"
           required="true" />
 
         <Label
-          id="lbl_create_comp_qui_measure"
+          id="lbl_edit_comp_qui_measure"
           text="{i18n>table.column.chemicalComp.formaMedida}" 
           required="true"/>
 
         <Select
-          id="sel_create_comp_qui_measure"
+          id="sel_edit_comp_qui_measure"
           selectedKey="{compQuiView>/NewCompQui/FormaMedidaCompQui}"
           required="true">
           <c:Item key="0" text="{i18n>select.item.measure.grama}"/>
@@ -44,24 +42,19 @@
         </Select>
       </form:SimpleForm>
     </content>
-
     <buttons>
-
-      <Button id="btn_create_comp_qui"
-        text="{i18n>btn.create}"
+      <Button id="btn_save_comp_qui"
+        text="{i18n>btnSave}"
         type="Accept"
-        press="onPressCreateCompQui"
-        icon="sap-icon://create" />
+        press="onPressSaveEditCompQui"
+        icon="sap-icon://save" />
 
       <Button
-        id="btn_cancel_create_comp_qui"
+        id="btn_cancel_cancel_comp_qui"
         text="{i18n>btn.cancel}"
+        press="onPressCancelEditCompQui"
         type="Reject"
-        press="onPressCancelCreateCompQui"
         icon="sap-icon://decline" />
-        
     </buttons>
-
   </Dialog>
-
 </c:FragmentDefinition>

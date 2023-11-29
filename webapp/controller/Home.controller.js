@@ -190,12 +190,12 @@ sap.ui.define([
 		},
 
 		onShowHome: function() {
-			this._oModelView.setProperty("/Pages/VisibleHome", true);
+			this._oModelView.setProperty("/Pages/VisibleInOutComp", true);
 			this._oModelView.setProperty("/Pages/VisibleCompQuimicos", false);
 		},
 
 		onShowCompQuimicos: function() {
-			this._oModelView.setProperty("/Pages/VisibleHome", false);
+			this._oModelView.setProperty("/Pages/VisibleInOutComp", false);
 			this._oModelView.setProperty("/Pages/VisibleCompQuimicos", true);
 		},
 
@@ -247,9 +247,42 @@ sap.ui.define([
 			this.byId("dialog_create_comp_qui").close();
 			this._oModelViewCompQui.setData(this._setOModelViewCompQui());
 		},
+
+		_handleDialogEditCompQui: function(bShow) {
+			if (bShow) {
+				this.pDialogEditComp ??= this.loadFragment({
+					name: "br.com.switch.salestem.view.fragments.EditCompQuiDialog"
+				});
+				this.pDialogEditComp.then((oDialog) => oDialog.open());
+			} else {
+				this.byId("dialog_edit_comp_qui").close();
+				this._oModelViewCompQui.setData(this._setOModelViewCompQui());
+			}
+		},
+
+		onEditRowCompQui: function(oEvent) {
+			this.oEventEditAction = oEvent;
+			this.oSelectedRowItemCompQui = oEvent.getParameter("item");
+			this.oSelectedRowEditCompQui = oEvent.getParameter("row");
+
+			CompQuiHandler.editRowCompQui(oEvent, this);
+			this._handleDialogEditCompQui(true);
+		},
+		
+		onDeleteRowCompQui: function(oEvent) {
+			CompQuiHandler.deleteRowCompQUi(oEvent, this);
+		},
+		
+		onPressSaveEditCompQui: function(oEvent) {
+			CompQuiHandler.saveEditCompQui(this);
+			this._handleDialogEditCompQui(false);
+		},
+		
+		onPressCancelEditCompQui: function(oEvent) {
+			this._handleDialogEditCompQui(false);
+		},
 		/* COMP. QUÍMICOS */
 		/* ============== */
-
 
     });
 });

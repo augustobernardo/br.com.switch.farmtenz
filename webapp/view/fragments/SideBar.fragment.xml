@@ -7,7 +7,7 @@
 
       <tnt:NavigationListItem
         id="navListItem_home"
-        text="{i18n>sideBar.home}"
+        text="{i18n>sideBar.inpOutCompQui}"
         key="home"
         select="onShowHome"
         icon="sap-icon://home" />
