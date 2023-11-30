@@ -15,6 +15,8 @@ sap.ui.define([
 
 			this._oRouter.getRoute("login").attachPatternMatched(this.onRouteMatched, this);
 
+            this._oView.setBusyIndicatorDelay(0);
+
             this.setFocus("input_email");
         },
 
@@ -54,12 +56,28 @@ sap.ui.define([
         },
 
         onLogin: function() {
-            if (this._checkLoginForm()) {
-                let sPassword = this._oModelView.getProperty("/LoginForm/Password");
-                let sEmail = this._oModelView.getProperty("/LoginForm/Email");
-                let bRememberMe = this._oModelView.getProperty("/LoginForm/RememberMe");
 
-				this._oView.setBusy(true);
+            this.getView().setBusy(true);
+
+            if (this._checkLoginForm()) {
+                this._login(this).then(() => {
+                    this._oView.setBusy(false);
+
+                    let sTokenEmail = btoa(this._oModelView.getProperty("/LoginForm/Email"));
+                    let sTokenPassword = btoa(this._oModelView.getProperty("/LoginForm/Password"));
+
+                    this.navTo("home", {
+                        token: sTokenEmail +":"+ sTokenPassword,
+                    }, true);
+                });
+            }
+        },
+
+		_login: function(_this) {
+            return new Promise(function(resolve, reject) {
+                let sPassword = _this._oModelView.getProperty("/LoginForm/Password");
+                let sEmail = _this._oModelView.getProperty("/LoginForm/Email");
+                let bRememberMe = _this._oModelView.getProperty("/LoginForm/RememberMe");
 
                 let sTokenEmail = btoa(sEmail);
 				let sTokenPassword = btoa(sPassword);
@@ -69,19 +87,13 @@ sap.ui.define([
                 if (bRememberMe) {
                     var sCookieName = btoa("rememberMe");
                     var iDays = 7;
-                    this.setCookie(sCookieName, sCookieValue, iDays);
+                    _this.setCookie(sCookieName, sCookieValue, iDays);
                 }
 
-
                 localStorage.setItem("infoLogin", sTokenEmail+":"+sTokenPassword);
-
-                this.navTo("home", {
-                    token: sTokenEmail+":"+sTokenPassword,
-                }, true);
-
-				this._oView.setBusy(false);
-            }
-        },
+                resolve();
+            });
+		},
 
         onSubmitLogin: function() {
             this.onLogin();

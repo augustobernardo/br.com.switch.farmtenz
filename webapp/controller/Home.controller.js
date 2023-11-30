@@ -261,8 +261,6 @@ sap.ui.define([
 		},
 
 		onEditRowCompQui: function(oEvent) {
-			this.oEventEditAction = oEvent;
-			this.oSelectedRowItemCompQui = oEvent.getParameter("item");
 			this.oSelectedRowEditCompQui = oEvent.getParameter("row");
 
 			CompQuiHandler.editRowCompQui(oEvent, this);
