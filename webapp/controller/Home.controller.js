@@ -19,9 +19,12 @@ sap.ui.define([
 
 			this._oModelViewCompQui = new JSONModel(this._setOModelViewCompQui());
 			this._oView.setModel(this._oModelViewCompQui, "compQuiView");
+			this._oModelViewTableInpOut = new JSONModel(this._setOModelViewTableInpOut());
+			this._oView.setModel(this._oModelViewTableInpOut, "inpOutTable");
 
 			this._oModelViewTableCompQui = new JSONModel(this._setOModelViewTableCompQui());
 			this._oView.setModel(this._oModelViewTableCompQui, "compQuiTable");
+
 
 			this._oView.setBusyIndicatorDelay(0);
 
@@ -66,6 +69,20 @@ sap.ui.define([
 				},
 				Ui: {
 					TableCompQui: {
+						FiltroGlobal: ""
+					}
+				},
+			}
+			return oModelTable;
+		},
+
+		_setOModelViewTableInpOut: function() {
+			var oModelTable = {
+				TableInOut: {
+					Items: []
+				},
+				Ui: {
+					TableInOut: {
 						FiltroGlobal: ""
 					}
 				},

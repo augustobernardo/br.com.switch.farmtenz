@@ -21,7 +21,7 @@
       <table:Table
 		id="table_home"
 		selectionMode="None"
-		rows="{compQuiTable>/TableCompQui/Items}">
+		rows="{inpOutTable>/TableInOut/Items}">
 		<table:extension>
 			<OverflowToolbar style="Clear">
 				<Title text="{i18n>table.title.inpOutCompQui}" wrapping="true" level="H2" titleStyle="H4"/>
@@ -51,7 +51,7 @@
 
 					<Label text="{i18n>table.column.chemicalComp.name}"/>
 					<table:template>
-					<Text text="{compQuiTable>NomeCompQui}"/>
+					<Text text="{inpOutTable>NomeCompQui}"/>
 					</table:template>
 				</table:Column>
 
@@ -60,7 +60,7 @@
 					showSortMenuEntry="false">
 					<Label text="{i18n>table.column.chemicalComp.formula}"/>
 					<table:template>
-					<Text text="{compQuiTable>FormulaCompQui}"/>
+					<Text text="{inpOutTable>FormulaCompQui}"/>
 					</table:template>
 				</table:Column>
 
@@ -69,7 +69,7 @@
 					showSortMenuEntry="false">
 					<Label text="{i18n>table.column.chemicalComp.formaMedida}"/>
 					<table:template>
-					<Text text="{compQuiTable>FormaMedidaCompQui}"/>
+					<Text text="{inpOutTable>FormaMedidaCompQui}"/>
 					</table:template>
 				</table:Column>
 			</table:columns>
@@ -83,7 +83,7 @@
           tooltip="{i18n>btn.create.chemicalComp}"
           type="Emphasized"
           icon="sap-icon://add"
-          press="onShowCreateCompDialog"/>
+          press="onShowCreateInpOutDialog"/>
       </Toolbar>
     </footer>
   </Page>
