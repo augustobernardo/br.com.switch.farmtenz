@@ -7,7 +7,7 @@ sap.ui.define(["sap/ui/test/opaQunit", "./pages/Main"], function () {
 		// Arrangements
 		Given.iStartMyUIComponent({
 			componentConfig: {
-				name: "br.com.switch.salestem"
+				name: "br.com.switch.farmtenz"
 			}
 		});
 
@@ -31,7 +31,7 @@ sap.ui.define(["sap/ui/test/opaQunit", "./pages/Main"], function () {
 		// Arrangements
 		Given.iStartMyUIComponent({
 			componentConfig: {
-				name: "br.com.switch.salestem"
+				name: "br.com.switch.farmtenz"
 			}
 		});
 

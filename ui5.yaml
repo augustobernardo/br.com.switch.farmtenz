@@ -1,6 +1,6 @@
 specVersion: "3.0"
 metadata:
-  name: br.com.switch.salestem
+  name: br.com.switch.farmtenz
 type: application
 framework:
   name: OpenUI5

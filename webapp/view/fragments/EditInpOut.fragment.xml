@@ -4,16 +4,16 @@
 
   <Dialog id="dialog_edit_inp_out" icon="sap-icon://edit" title="{i18n>dialog.editInpOut.title}">
 
-    <content>        
+    <content>
         <form:SimpleForm >
-            
+
             <!-- TIPO -->
-            <Label 
+            <Label
                 id="lbl_edit_inp_out_type_edit"
-                text="{i18n>table.column.inpOut.type}" 
+                text="{i18n>table.column.inpOut.type}"
                 required="true" />
-                
-            <RadioButtonGroup 
+
+            <RadioButtonGroup
                 id="radio_btn_group_type_edit"
                 columns="2"
                 selectedIndex="{inpOutView>/NewInpOut/TipoSelectedKey}">
@@ -22,14 +22,15 @@
             </RadioButtonGroup>
 
             <!-- NOME -->
-            <Label 
+            <Label
                 id="lbl_edit_inp_out_name_edit"
-                text="{i18n>table.column.chemicalComp.name}" 
+                text="{i18n>table.column.chemicalComp.name}"
                 required="true" />
 
             <Input
                 id="inp_edit_inp_out_name_edit"
                 value="{inpOutView>/NewInpOut/NomeComp}"
+                valueHelpIconSrc="sap-icon://inspect"
                 valueState="{inpOutView>/StateControl/NomeCompState}"
                 showValueHelp="true"
                 valueHelpRequest=".onValueHelpRequest"
@@ -51,7 +52,7 @@
                 id="lbl_edit_inp_out_measure_edit"
                 text="{i18n>table.column.chemicalComp.formaMedida}"/>
 
-            <Input 
+            <Input
                 id="inp_edit_inp_out_measure_edit"
                 width="40%"
                 editable="false"
@@ -62,13 +63,13 @@
                 id="lbl_edit_inp_out_quantity_edit"
                 text="{i18n>table.column.inpOut.quantity}"/>
 
-            <Input 
+            <Input
                 id="inp_edit_inp_out_quantity_edit"
                 width="40%"
                 value="{inpOutView>/NewInpOut/Quantidade}"
                 valueState="{inpOutView>/StateControl/QuantidadeState}"
                 required="true" />
-            
+
             <!-- DATA -->
             <Label
                 id="lbl_edit_inp_out_date_edit"

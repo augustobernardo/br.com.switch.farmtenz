@@ -1,4 +1,4 @@
-<mvc:View controllerName="br.com.switch.salestem.controller.Login" height="100%"
+<mvc:View controllerName="br.com.switch.farmtenz.controller.Login" height="100%"
   xmlns="sap.m"
   xmlns:f="sap.f"
   xmlns:card="sap.f.cards"
@@ -14,7 +14,7 @@
         class="sapUiLargeMarginTop sapUiSmallMarginBeginEnd">
 
         <Title
-          id="id_salestem_title"
+          id="id_farmtenz_title"
           class="sapUiSmallMarginBottom
           sapUiLargeMarginTop"
           text="{i18n>title}"

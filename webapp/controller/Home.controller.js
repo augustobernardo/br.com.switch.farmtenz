@@ -1,15 +1,15 @@
 sap.ui.define([
-	"br/com/switch/salestem/controller/BaseController",
+	"br/com/switch/farmtenz/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageBox",
-	"br/com/switch/salestem/scripts/compQuiHandler",
-	"br/com/switch/salestem/scripts/inpOutHandler",
+	"br/com/switch/farmtenz/scripts/compQuiHandler",
+	"br/com/switch/farmtenz/scripts/inpOutHandler",
 	"sap/ui/model/Filter",
 	"sap/ui/model/FilterOperator",
 ], function(BaseController, JSONModel, MessageBox, CompQuiHandler, InpOutHandler, Filter, FilterOperator) {
 	"use strict";
 
-	return BaseController.extend("br.com.switch.salestem.controller.Home", {
+	return BaseController.extend("br.com.switch.farmtenz.controller.Home", {
 
 		onInit: function() {
 			this._oView = this.getView();
@@ -221,7 +221,7 @@ sap.ui.define([
 
 		onShowConfigDialog: function() {
 			this.pDialog ??= this.loadFragment({
-				name: "br.com.switch.salestem.view.fragments.ConfigDialog"
+				name: "br.com.switch.farmtenz.view.fragments.ConfigDialog"
 			});
 			this.pDialog.then((oDialog) => oDialog.open())
 		},
@@ -269,7 +269,7 @@ sap.ui.define([
 			if (!this._pValueHelpDialog) {
 				this._pValueHelpDialog = this.loadFragment({
 					id: oView.getId(),
-					name: "br.com.switch.salestem.view.fragments.ValueHelpDialog",
+					name: "br.com.switch.farmtenz.view.fragments.ValueHelpDialog",
 					controller: this
 				}).then(function (oDialog) {
 					oView.addDependent(oDialog);
@@ -306,7 +306,7 @@ sap.ui.define([
 		/* ENTRADAS E SAÍDAS */
 		onShowCreateInpOutDialog: function(oEvent) {
 			this.pDialogCreateInpOut ??= this.loadFragment({
-				name: "br.com.switch.salestem.view.fragments.CreateInpOut"
+				name: "br.com.switch.farmtenz.view.fragments.CreateInpOut"
 			});
 			this.pDialogCreateInpOut.then((oDialog) => oDialog.open())
 		},
@@ -349,7 +349,7 @@ sap.ui.define([
 		_handleDialogEditInpOut: function(bShow) {
 			if (bShow) {
 				this.pDialogEditInpOut ??= this.loadFragment({
-					name: "br.com.switch.salestem.view.fragments.EditInpOut"
+					name: "br.com.switch.farmtenz.view.fragments.EditInpOut"
 				});
 				this.pDialogEditInpOut.then((oDialog) => oDialog.open());
 			} else {
@@ -359,7 +359,7 @@ sap.ui.define([
 		},
 
 		handleSortButtonPressedInpOut: function () {
-			InpOutHandler.getViewSettingsDialog("br.com.switch.salestem.view.fragments.SortDialogInpOut", this)
+			InpOutHandler.getViewSettingsDialog("br.com.switch.farmtenz.view.fragments.SortDialogInpOut", this)
 				.then(function (oViewSettingsDialog) {
 					oViewSettingsDialog.open();
 				});
@@ -389,7 +389,7 @@ sap.ui.define([
 		/* ============== */
 		/* COMP. QUÍMICOS */
 		handleSortButtonPressed: function () {
-			CompQuiHandler.getViewSettingsDialog("br.com.switch.salestem.view.fragments.SortDialog", this)
+			CompQuiHandler.getViewSettingsDialog("br.com.switch.farmtenz.view.fragments.SortDialog", this)
 				.then(function (oViewSettingsDialog) {
 					oViewSettingsDialog.open();
 				});
@@ -415,7 +415,7 @@ sap.ui.define([
 
 		onShowCreateCompDialog: function(oEvent) {
 			this.pDialogCreateComp ??= this.loadFragment({
-				name: "br.com.switch.salestem.view.fragments.CreateCompDialog"
+				name: "br.com.switch.farmtenz.view.fragments.CreateCompDialog"
 			});
 			this.pDialogCreateComp.then((oDialog) => oDialog.open())
 		},
@@ -440,7 +440,7 @@ sap.ui.define([
 		_handleDialogEditCompQui: function(bShow) {
 			if (bShow) {
 				this.pDialogEditComp ??= this.loadFragment({
-					name: "br.com.switch.salestem.view.fragments.EditCompQuiDialog"
+					name: "br.com.switch.farmtenz.view.fragments.EditCompQuiDialog"
 				});
 				this.pDialogEditComp.then((oDialog) => oDialog.open());
 			} else {

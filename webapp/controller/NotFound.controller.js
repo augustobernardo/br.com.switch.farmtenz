@@ -1,9 +1,9 @@
 sap.ui.define([
-    "br/com/switch/salestem/controller/BaseController",
+    "br/com/switch/farmtenz/controller/BaseController",
 ], function(BaseController) {
     "use strict";
 
-    return BaseController.extend("br.com.switch.salestem.controller.NotFound", {
+    return BaseController.extend("br.com.switch.farmtenz.controller.NotFound", {
 
     });
 });

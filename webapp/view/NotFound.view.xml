@@ -1,5 +1,5 @@
 <mvc:View
-   controllerName="br.com.switch.salestem.controller.NotFound"
+   controllerName="br.com.switch.farmtenz.controller.NotFound"
    xmlns="sap.m"
    xmlns:mvc="sap.ui.core.mvc">
 

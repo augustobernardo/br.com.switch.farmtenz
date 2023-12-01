@@ -1,4 +1,4 @@
-<mvc:View controllerName="br.com.switch.salestem.controller.Register" height="100%"
+<mvc:View controllerName="br.com.switch.farmtenz.controller.Register" height="100%"
   xmlns="sap.m"
   xmlns:f="sap.f"
   xmlns:card="sap.f.cards"

@@ -1,4 +1,4 @@
-sap.ui.define(["br/com/switch/salestem/controller/Main.controller"], function (MainController) {
+sap.ui.define(["br/com/switch/farmtenz/controller/Main.controller"], function (MainController) {
 	"use strict";
 
 	QUnit.module("Sample App controller test");

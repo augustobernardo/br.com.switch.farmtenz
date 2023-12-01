@@ -1,10 +1,10 @@
 sap.ui.define([
-	"br/com/switch/salestem/controller/BaseController",
+	"br/com/switch/farmtenz/controller/BaseController",
     "sap/ui/model/json/JSONModel"
 ], function(BaseController, JSONModel) {
 	"use strict";
 
-	return BaseController.extend("br.com.switch.salestem.controller.Login", {
+	return BaseController.extend("br.com.switch.farmtenz.controller.Login", {
 
         onInit: function() {
             this._oView = this.getView();

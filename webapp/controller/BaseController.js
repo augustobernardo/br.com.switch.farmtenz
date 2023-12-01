@@ -5,7 +5,7 @@ sap.ui.define([
 ], function (Controller, UIComponent, History) {
 	"use strict";
 
-	return Controller.extend("br.com.switch.salestem.controller.BaseController", {
+	return Controller.extend("br.com.switch.farmtenz.controller.BaseController", {
 
 		getOwnerComponent: function () {
 			return Controller.prototype.getOwnerComponent.call(this);

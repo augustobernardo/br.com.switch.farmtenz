@@ -1,7 +1,7 @@
 {
 	"_version": "1.12.0",
 	"sap.app": {
-		"id": "br.com.switch.salestem",
+		"id": "br.com.switch.farmtenz",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
 		"title": "{{appTitle}}",
@@ -21,7 +21,7 @@
 	},
 	"sap.ui5": {
 		"rootView": {
-			"viewName": "br.com.switch.salestem.view.App",
+			"viewName": "br.com.switch.farmtenz.view.App",
 			"type": "XML",
 			"async": true,
 			"id": "app"
@@ -42,7 +42,7 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "br.com.switch.salestem.i18n.i18n"
+					"bundleName": "br.com.switch.farmtenz.i18n.i18n"
 				}
 			}
 		},
@@ -50,7 +50,7 @@
 			"config": {
 				"routerClass": "sap.m.routing.Router",
 				"viewType": "XML",
-				"viewPath": "br.com.switch.salestem.view",
+				"viewPath": "br.com.switch.farmtenz.view",
 				"controlId": "app",
 				"bypassed": {
 					"target": "NotFound"
@@ -106,8 +106,8 @@
 			}
 		}
 	},
-	"name": "Salestem",
-	"short_name": "Salestem",
+	"name": "Farmtenz",
+	"short_name": "Farmtenz",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#ffffff",

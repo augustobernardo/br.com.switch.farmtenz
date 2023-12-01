@@ -4,16 +4,16 @@
 
   <Dialog id="dialog_create_inp_out" icon="sap-icon://create" title="{i18n>dialog.createInpOut.title}">
 
-    <content>        
+    <content>
         <form:SimpleForm >
-            
+
             <!-- TIPO -->
-            <Label 
+            <Label
                 id="lbl_create_inp_out_type"
-                text="{i18n>table.column.inpOut.type}" 
+                text="{i18n>table.column.inpOut.type}"
                 required="true" />
-                
-            <RadioButtonGroup 
+
+            <RadioButtonGroup
                 id="radio_btn_group_type"
                 columns="2"
                 selectedIndex="{inpOutView>/NewInpOut/TipoSelectedKey}">
@@ -22,14 +22,15 @@
             </RadioButtonGroup>
 
             <!-- NOME -->
-            <Label 
+            <Label
                 id="lbl_create_inp_out_name"
-                text="{i18n>table.column.chemicalComp.name}" 
+                text="{i18n>table.column.chemicalComp.name}"
                 required="true" />
 
             <Input
                 id="inp_create_inp_out_name"
                 value="{inpOutView>/NewInpOut/NomeComp}"
+                valueHelpIconSrc="sap-icon://inspect"
                 valueState="{inpOutView>/StateControl/NomeCompState}"
                 showValueHelp="true"
                 valueHelpRequest=".onValueHelpRequest"
@@ -52,7 +53,7 @@
                 id="lbl_create_inp_out_measure"
                 text="{i18n>table.column.chemicalComp.formaMedida}"/>
 
-            <Input 
+            <Input
                 id="inp_create_inp_out_measure"
                 width="40%"
                 editable="false"
@@ -63,13 +64,13 @@
                 id="lbl_create_inp_out_quantity"
                 text="{i18n>table.column.inpOut.quantity}"/>
 
-            <Input 
+            <Input
                 id="inp_create_inp_out_quantity"
                 width="40%"
                 value="{inpOutView>/NewInpOut/Quantidade}"
                 valueState="{inpOutView>/StateControl/QuantidadeState}"
                 required="true" />
-            
+
             <!-- DATA -->
             <Label
                 id="lbl_create_inp_out_date"
