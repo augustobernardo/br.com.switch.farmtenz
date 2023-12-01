@@ -20,6 +20,7 @@
       <table:Table
 				id="table_comp_qui"
 				selectionMode="None"
+        noData="{i18n>table.noData.chemicalComp}"
         alternateRowColors="true"
         rowActionCount="1"
         class="sapUiTinyMarginBeginEnd"

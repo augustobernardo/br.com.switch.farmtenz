@@ -21,6 +21,7 @@
 		<table:Table
 			id="table_home"
 			selectionMode="None"
+      noData="{i18n>table.noData.inpOutCompQui}"
 			rowActionCount="1"
 			class="sapUiTinyMarginBeginEnd"
 			rows="{inpOutTable>/TableInOut/Items}">
@@ -55,7 +56,7 @@
 			</table:RowAction>
 
 			</table:rowActionTemplate>
-		
+
 			<table:columns>
 
 				<!-- Create an column to show a status -->

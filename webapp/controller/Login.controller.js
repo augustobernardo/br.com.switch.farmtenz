@@ -1,7 +1,8 @@
 sap.ui.define([
 	"br/com/switch/farmtenz/controller/BaseController",
-    "sap/ui/model/json/JSONModel"
-], function(BaseController, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+	"sap/m/MessageBox"
+], function(BaseController, JSONModel, MessageBox) {
 	"use strict";
 
 	return BaseController.extend("br.com.switch.farmtenz.controller.Login", {
@@ -70,7 +71,16 @@ sap.ui.define([
                         token: sTokenEmail +":"+ sTokenPassword,
                     }, true);
                 });
-            }
+            } else {
+				this._oView.setBusy(false);
+
+				var oInputEmail = this._oView.byId("input_email");
+				var oInputPass = this._oView.byId("input_pass");
+
+				if (oInputEmail.getValueState() === "Error" || oInputPass.getValueState() === "Error") {
+					MessageBox.error(this.getResourceBundle().getText("login_form_fields_error"));
+				}
+			}
         },
 
 		_login: function(_this) {
