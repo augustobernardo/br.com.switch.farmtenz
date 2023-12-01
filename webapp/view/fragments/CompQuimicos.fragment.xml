@@ -22,6 +22,7 @@
 				selectionMode="None"
         alternateRowColors="true"
         rowActionCount="1"
+        class="sapUiTinyMarginBeginEnd"
 				rows="{compQuiTable>/TableCompQui/Items}">
 				<table:extension>
 					<OverflowToolbar style="Clear">

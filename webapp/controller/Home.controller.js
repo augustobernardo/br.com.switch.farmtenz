@@ -2,8 +2,11 @@ sap.ui.define([
 	"br/com/switch/salestem/controller/BaseController",
 	"sap/ui/model/json/JSONModel",
 	"sap/m/MessageBox",
-	"br/com/switch/salestem/scripts/compQuiHandler"
-], function(BaseController, JSONModel, MessageBox, CompQuiHandler) {
+	"br/com/switch/salestem/scripts/compQuiHandler",
+	"br/com/switch/salestem/scripts/inpOutHandler",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator",
+], function(BaseController, JSONModel, MessageBox, CompQuiHandler, InpOutHandler, Filter, FilterOperator) {
 	"use strict";
 
 	return BaseController.extend("br.com.switch.salestem.controller.Home", {
@@ -17,10 +20,16 @@ sap.ui.define([
 			this._oModelView = new JSONModel(this._setOModelView());
 			this._oView.setModel(this._oModelView, "homeView");
 
-			this._oModelViewCompQui = new JSONModel(this._setOModelViewCompQui());
-			this._oView.setModel(this._oModelViewCompQui, "compQuiView");
+			// ENTRADA E SAÍDA
+			this._oModelViewInpOut = new JSONModel(this._setOModelViewInpOut());
+			this._oView.setModel(this._oModelViewInpOut, "inpOutView");
+
 			this._oModelViewTableInpOut = new JSONModel(this._setOModelViewTableInpOut());
 			this._oView.setModel(this._oModelViewTableInpOut, "inpOutTable");
+
+			// COMP. QUÍMICOS
+			this._oModelViewCompQui = new JSONModel(this._setOModelViewCompQui());
+			this._oView.setModel(this._oModelViewCompQui, "compQuiView");
 
 			this._oModelViewTableCompQui = new JSONModel(this._setOModelViewTableCompQui());
 			this._oView.setModel(this._oModelViewTableCompQui, "compQuiTable");
@@ -50,6 +59,7 @@ sap.ui.define([
 		_setOModelViewCompQui: function() {
 			var oModelCompQui = {
 				NewCompQui: {
+					IdCompQui: 0,
 					NomeComp: "",
 					Formula: "",
 					FormaMedidaCompQui: "",
@@ -75,6 +85,37 @@ sap.ui.define([
 			}
 			return oModelTable;
 		},
+
+		_setOModelViewInpOut: function() {
+			var oModelInpOut = {
+				NewInpOut: {
+					IdInpOut: 0,
+					NomeComp: "",
+					Formula: "",
+					FormaMedidaCompQui: "",
+					DataRegistro: null,
+					DataRegistroFormatted: "",
+					Quantidade: "",
+					UnidadeMedida: "",
+					Tipo: "",
+					TipoSelectedKey: 0,
+					Observacoes: "",
+				},
+				SearchHelp: {
+					TableCompQui: [],
+				},
+				StateControl: {
+					NomeCompState: "None",
+					FormulaState: "None",
+					DataRegistroState: "None",
+					QuantidadeState: "None",
+					UnidadeMedidaState: "None",
+					ObservacoesState: "None",
+				},
+			}
+			return oModelInpOut;
+		},
+
 
 		_setOModelViewTableInpOut: function() {
 			var oModelTable = {
@@ -179,7 +220,6 @@ sap.ui.define([
 		},
 
 		onShowConfigDialog: function() {
-			// create dialog lazily
 			this.pDialog ??= this.loadFragment({
 				name: "br.com.switch.salestem.view.fragments.ConfigDialog"
 			});
@@ -216,6 +256,136 @@ sap.ui.define([
 			this._oModelView.setProperty("/Pages/VisibleCompQuimicos", true);
 		},
 
+		onValueHelpRequest: function (oEvent) {
+			var sInputValue = oEvent.getSource().getValue(),
+				oView = this.getView();
+				
+			var sInputValueModel = this._oModelViewInpOut.getProperty("/NewInpOut/NomeComp");
+
+			var aTableCompQui = this._oModelViewTableCompQui.getProperty("/TableCompQui/Items");
+			
+			this._oModelViewInpOut.setProperty("/SearchHelp/TableCompQui", aTableCompQui);
+
+			if (!this._pValueHelpDialog) {
+				this._pValueHelpDialog = this.loadFragment({
+					id: oView.getId(),
+					name: "br.com.switch.salestem.view.fragments.ValueHelpDialog",
+					controller: this
+				}).then(function (oDialog) {
+					oView.addDependent(oDialog);
+					return oDialog;
+				});
+			}
+			this._pValueHelpDialog.then(function(oDialog) {
+				oDialog.getBinding("items").filter([new Filter("NomeCompQui", FilterOperator.Contains, sInputValue)]);
+				oDialog.open(sInputValueModel);
+			});
+		},
+
+		onValueHelpSearch: function (oEvent) {
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new Filter("NomeCompQui", FilterOperator.Contains, sValue);
+
+			oEvent.getSource().getBinding("items").filter([oFilter]);
+		},
+
+		onValueHelpClose: function (oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem");
+			oEvent.getSource().getBinding("items").filter([]);
+
+			if (!oSelectedItem) {
+				return;
+			}
+
+			this._oModelViewInpOut.setProperty("/NewInpOut/NomeComp", oSelectedItem.getTitle());
+			this._oModelViewInpOut.setProperty("/NewInpOut/Formula", oSelectedItem.getDescription());
+			this._oModelViewInpOut.setProperty("/NewInpOut/FormaMedidaCompQui", oSelectedItem.getInfo());
+		},
+
+		/* ================= */
+		/* ENTRADAS E SAÍDAS */
+		onShowCreateInpOutDialog: function(oEvent) {
+			this.pDialogCreateInpOut ??= this.loadFragment({
+				name: "br.com.switch.salestem.view.fragments.CreateInpOut"
+			});
+			this.pDialogCreateInpOut.then((oDialog) => oDialog.open())
+		},
+
+		onPressSaveInpOut: function (oEvent) {
+			var bError = InpOutHandler.createInpOut(this);
+			if (bError) {
+				this.onPressCancelInpOut();
+				this.optCols(this.byId("table_home"));
+			}
+		},
+
+		onPressCancelInpOut: function() {
+			this.byId("dialog_create_inp_out").close();
+			this._oModelViewInpOut.setData(this._setOModelViewInpOut());
+		},
+
+		onEditRowInpOut: function(oEvent) {
+			this.oSelectedRowEditInpOut = oEvent.getParameter("row");
+
+			InpOutHandler.editRowInpOut(oEvent, this);
+			this._handleDialogEditInpOut(true);
+		},
+
+		onPressSaveEditInpOut: function(oEvent) {
+			var bError = InpOutHandler.saveEditInpOut(this);
+			if (!bError) {
+				this._handleDialogEditInpOut(false);
+			}
+		},
+
+		onPressCancelEditInpOut: function(oEvent) {
+			this._handleDialogEditInpOut(false);
+		},
+
+		onDeleteRowInpOut: function(oEvent) {
+			InpOutHandler.deleteRowInpOut(oEvent, this);
+		},
+
+		_handleDialogEditInpOut: function(bShow) {
+			if (bShow) {
+				this.pDialogEditInpOut ??= this.loadFragment({
+					name: "br.com.switch.salestem.view.fragments.EditInpOut"
+				});
+				this.pDialogEditInpOut.then((oDialog) => oDialog.open());
+			} else {
+				this.byId("dialog_edit_inp_out").close();
+				this._oModelViewInpOut.setData(this._setOModelViewInpOut());
+			}
+		},
+
+		handleSortButtonPressedInpOut: function () {
+			InpOutHandler.getViewSettingsDialog("br.com.switch.salestem.view.fragments.SortDialogInpOut", this)
+				.then(function (oViewSettingsDialog) {
+					oViewSettingsDialog.open();
+				});
+		},
+
+		handleSortDialogConfirmInpOut: function (oEvent) {
+			InpOutHandler.handleSortDialogConfirmInpOut(this.byId("table_home"), oEvent);
+		},
+
+		onLCFilterGlobalInpOut: function(oEvent) {
+			InpOutHandler.setFilterBinding(
+				oEvent.getParameter("newValue"),
+				this.byId("table_home")
+			);
+		},
+
+		onFilterInpOut: function(oEvent) {
+			InpOutHandler.setFilterBinding(
+				oEvent.getParameter("query"),
+				this.byId("table_home")
+			);
+		},
+
+		/* ENTRADAS E SAÍDAS */
+		/* ================= */
+
 		/* ============== */
 		/* COMP. QUÍMICOS */
 		handleSortButtonPressed: function () {
@@ -251,8 +421,10 @@ sap.ui.define([
 		},
 
 		onPressCreateCompQui: function (oEvent) {
-			CompQuiHandler.createCompQui(this);
-			this.onPressCancelCreateCompQui();
+			var bError = CompQuiHandler.createCompQui(this);
+			if (!bError) {
+				this.onPressCancelCreateCompQui();
+			}
 		},
 
 		onSubmitCreateQuiForm: function(oEvent) {
@@ -289,8 +461,11 @@ sap.ui.define([
 		},
 		
 		onPressSaveEditCompQui: function(oEvent) {
-			CompQuiHandler.saveEditCompQui(this);
-			this._handleDialogEditCompQui(false);
+			var bError = CompQuiHandler.saveEditCompQui(this);
+			
+			if (!bError) {
+				this._handleDialogEditCompQui(false);
+			}
 		},
 		
 		onPressCancelEditCompQui: function(oEvent) {

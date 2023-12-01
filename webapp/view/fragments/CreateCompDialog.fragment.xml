@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core">
 
-  <Dialog id="dialog_create_comp_qui" title="{i18n>dialog.crateCompQui.title}">
+  <Dialog id="dialog_create_comp_qui" icon="sap-icon://create" title="{i18n>dialog.crateCompQui.title}">
     
     <content>
       <form:SimpleForm >
@@ -48,10 +48,10 @@
     <buttons>
 
       <Button id="btn_create_comp_qui"
-        text="{i18n>btn.create}"
+        text="{i18n>btn.save}"
         type="Accept"
         press="onPressCreateCompQui"
-        icon="sap-icon://create" />
+        icon="sap-icon://save" />
 
       <Button
         id="btn_cancel_create_comp_qui"

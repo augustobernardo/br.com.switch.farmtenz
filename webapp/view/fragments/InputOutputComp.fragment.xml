@@ -6,44 +6,73 @@
   <Page id="page_home" showHeader="false" class="sapUiResponsiveContentPadding">
 
     <content>
-      <VBox id="vbox_home_content">
+		<VBox id="vbox_home_content">
 
-        <VBox id="vbox_home_title" class="sapUiMediumMarginBottom sapUiTinyMarginBegin">
-          <Title
-            text="{i18n>sideBar.inpOutCompQui}"
-            level="H3"
-            titleStyle="H3"
-			wrapping="true"
-            class="sapUiSmallMarginTopBottom"/>
-        </VBox>
-      </VBox>
+			<VBox id="vbox_home_title" class="sapUiMediumMarginBottom sapUiTinyMarginBegin">
+			<Title
+				text="{i18n>sideBar.inpOutCompQui}"
+				level="H3"
+				titleStyle="H3"
+				wrapping="true"
+				class="sapUiSmallMarginTopBottom"/>
+			</VBox>
+		</VBox>
 
-      <table:Table
-		id="table_home"
-		selectionMode="None"
-		rows="{inpOutTable>/TableInOut/Items}">
-		<table:extension>
-			<OverflowToolbar style="Clear">
-				<Title text="{i18n>table.title.inpOutCompQui}" wrapping="true" level="H2" titleStyle="H4"/>
+		<table:Table
+			id="table_home"
+			selectionMode="None"
+			rowActionCount="1"
+			class="sapUiTinyMarginBeginEnd"
+			rows="{inpOutTable>/TableInOut/Items}">
+			<table:extension>
+				<OverflowToolbar style="Clear">
+					<Title text="{i18n>table.title.inpOutCompQui}" wrapping="true" level="H2" titleStyle="H4"/>
 
-				<ToolbarSpacer/>
+					<ToolbarSpacer/>
 
-				<Button
-					tooltip="{i18n>btn.sort.table}"
-					icon="sap-icon://sort"
-					press="handleSortButtonPressed"/>
+					<Button
+						tooltip="{i18n>btn.sort.table}"
+						icon="sap-icon://sort"
+						press="handleSortButtonPressedInpOut"/>
 
-				<ToolbarSeparator/>
+					<ToolbarSeparator/>
 
-				<SearchField
-					placeholder="{i18n>searchField.placeholder}"
-					id="home_searchField"
-					liveChange=".onLCFilterGlobalCompQui"
-					width="auto"
-					search=".onFilterInpOutCompQui" />
-			</OverflowToolbar>
-		</table:extension>
+					<SearchField
+						placeholder="{i18n>searchField.placeholder}"
+						id="home_searchField"
+						liveChange=".onLCFilterGlobalInpOut"
+						width="auto"
+						search=".onFilterInpOut" />
+				</OverflowToolbar>
+			</table:extension>
+
+			<table:rowActionTemplate>
+				<table:RowAction >
+				<table:items>
+					<table:RowActionItem icon="sap-icon://edit" text="{i18n>btn.editItem}" press="onEditRowInpOut" />
+					<table:RowActionItem type="Delete" icon="sap-icon://delete" text="{i18n>btn.deleteItem}" press="onDeleteRowInpOut" />
+				</table:items>
+			</table:RowAction>
+
+			</table:rowActionTemplate>
+		
 			<table:columns>
+
+				<!-- Create an column to show a status -->
+				<table:Column
+					id="table_home_col_status"
+					showSortMenuEntry="false"
+					width="2rem"
+					hAlign="Center"
+					sortProperty="Status">
+					<table:template>
+						<ObjectStatus
+							class="sapUiSmallMarginBottom"
+							icon="{inpOutTable>StatusIcon}"
+							state="{inpOutTable>StatusState}" />
+					</table:template>
+				</table:Column>
+
 				<table:Column
 					id="table_home_col_name"
 					showSortMenuEntry="false"
@@ -51,7 +80,7 @@
 
 					<Label text="{i18n>table.column.chemicalComp.name}"/>
 					<table:template>
-					<Text text="{inpOutTable>NomeCompQui}"/>
+						<Text text="{inpOutTable>NomeComp}"/>
 					</table:template>
 				</table:Column>
 
@@ -60,7 +89,16 @@
 					showSortMenuEntry="false">
 					<Label text="{i18n>table.column.chemicalComp.formula}"/>
 					<table:template>
-					<Text text="{inpOutTable>FormulaCompQui}"/>
+						<Text text="{inpOutTable>Formula}"/>
+					</table:template>
+				</table:Column>
+
+				<table:Column
+					id="table_home_col_quantity"
+					showSortMenuEntry="false">
+					<Label text="{i18n>table.column.inpOut.quantity}"/>
+					<table:template>
+						<Text text="{inpOutTable>Quantidade}"/>
 					</table:template>
 				</table:Column>
 
@@ -69,7 +107,16 @@
 					showSortMenuEntry="false">
 					<Label text="{i18n>table.column.chemicalComp.formaMedida}"/>
 					<table:template>
-					<Text text="{inpOutTable>FormaMedidaCompQui}"/>
+						<Text text="{inpOutTable>FormaMedidaCompQui}"/>
+					</table:template>
+				</table:Column>
+
+				<table:Column
+					id="table_home_col_date"
+					showSortMenuEntry="false">
+					<Label text="{i18n>table.column.inpOut.date}"/>
+					<table:template>
+						<Text text="{inpOutTable>DataRegistroFormatted}"/>
 					</table:template>
 				</table:Column>
 			</table:columns>
@@ -79,8 +126,8 @@
       <Toolbar>
         <ToolbarSpacer/>
         <Button
-          text="{i18n>btn.create.chemicalComp}"
-          tooltip="{i18n>btn.create.chemicalComp}"
+          text="{i18n>btn.create.registerInpOut}"
+          tooltip="{i18n>btn.create.registerInpOut}"
           type="Emphasized"
           icon="sap-icon://add"
           press="onShowCreateInpOutDialog"/>

@@ -2,7 +2,7 @@
 	xmlns="sap.m"
 	xmlns:c="sap.ui.core">
 
-  <Dialog id="dialog_edit_comp_qui" title="{i18n>dialog.editCompQui.title}">
+  <Dialog id="dialog_edit_comp_qui" icon="sap-icon://edit" title="{i18n>dialog.editCompQui.title}">
     <content>
       <form:SimpleForm >
         <Label 
@@ -44,7 +44,7 @@
     </content>
     <buttons>
       <Button id="btn_save_comp_qui"
-        text="{i18n>btnSave}"
+        text="{i18n>btn.save}"
         type="Accept"
         press="onPressSaveEditCompQui"
         icon="sap-icon://save" />

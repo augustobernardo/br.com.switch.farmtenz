@@ -249,5 +249,23 @@ sap.ui.define([
 				oTable.autoResizeColumn(i);
 			}
 		},
+
+		/**
+		 * Convert to Upper Case the Object Values
+		 * @public
+		 * @param {Object} oObject - Object to be converted
+		 * @returns {Object} - Object with the values in Upper Case
+		 */
+		toUpperCaseObjectValues: function(oObject) {
+			const oObjectAux = oObject;
+			const oObjectFinal = {};
+
+			for (const sKey in oObject) {
+				if (oObjectAux.hasOwnProperty(sKey) && typeof oObjectAux[sKey] === "string") {
+					oObjectFinal[sKey] = oObjectAux[sKey].toUpperCase();
+				}
+			}
+			return oObjectFinal;
+		},
 	});
 });

@@ -1,0 +1,117 @@
+<c:FragmentDefinition xmlns:form="sap.ui.layout.form"
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core">
+
+  <Dialog id="dialog_create_inp_out" icon="sap-icon://create" title="{i18n>dialog.createInpOut.title}">
+
+    <content>        
+        <form:SimpleForm >
+            
+            <!-- TIPO -->
+            <Label 
+                id="lbl_create_inp_out_type"
+                text="{i18n>table.column.inpOut.type}" 
+                required="true" />
+                
+            <RadioButtonGroup 
+                id="radio_btn_group_type"
+                columns="2"
+                selectedIndex="{inpOutView>/NewInpOut/TipoSelectedKey}">
+                    <RadioButton  text="{i18n>table.column.inpOut.input}" />
+                    <RadioButton valueState="Error" text="{i18n>table.column.inpOut.output}"/>
+            </RadioButtonGroup>
+
+            <!-- NOME -->
+            <Label 
+                id="lbl_create_inp_out_name"
+                text="{i18n>table.column.chemicalComp.name}" 
+                required="true" />
+
+            <Input
+                id="inp_create_inp_out_name"
+                value="{inpOutView>/NewInpOut/NomeComp}"
+                valueState="{inpOutView>/StateControl/NomeCompState}"
+                showValueHelp="true"
+                valueHelpRequest=".onValueHelpRequest"
+                required="true" />
+
+            <!-- FORMULA -->
+            <Label
+                id="lbl_create_inp_out_formula"
+                text="{i18n>table.column.chemicalComp.formula}"/>
+
+            <Input
+                id="inp_create_inp_out_formula"
+                editable="false"
+                value="{inpOutView>/NewInpOut/Formula}"
+                valueState="{inpOutView>/StateControl/FormulaState}" />
+
+
+            <!-- MEDIDA -->
+            <Label
+                id="lbl_create_inp_out_measure"
+                text="{i18n>table.column.chemicalComp.formaMedida}"/>
+
+            <Input 
+                id="inp_create_inp_out_measure"
+                width="40%"
+                editable="false"
+                value="{inpOutView>/NewInpOut/FormaMedidaCompQui}"/>
+
+            <!-- QUANTIDADE -->
+            <Label
+                id="lbl_create_inp_out_quantity"
+                text="{i18n>table.column.inpOut.quantity}"/>
+
+            <Input 
+                id="inp_create_inp_out_quantity"
+                width="40%"
+                value="{inpOutView>/NewInpOut/Quantidade}"
+                valueState="{inpOutView>/StateControl/QuantidadeState}"
+                required="true" />
+            
+            <!-- DATA -->
+            <Label
+                id="lbl_create_inp_out_date"
+                text="{i18n>table.column.inpOut.date}"/>
+
+            <DatePicker
+                id="date_picker_create_inp_out"
+                value="{inpOutView>/NewInpOut/DataRegistroFormatted}"
+                valueState="{inpOutView>/StateControl/DataRegistroState}"
+                displayFormat="dd/MM/yyyy"
+                valueFormat="yyyy-MM-dd"
+                placeholder="dd/MM/yyyy"
+                width="40%"
+                required="true" />
+
+            <!-- OBSERVAÇÕES -->
+            <Label
+                id="lbl_create_inp_out_observations"
+                text="{i18n>table.column.inpOut.observations}"/>
+
+            <TextArea
+                id="text_area_create_inp_out_observations"
+                placeholder="{i18n>placeHolder.inpOut.observations}"
+                value="{inpOutView>/NewInpOut/Observacoes}"
+                valueState="{inpOutView>/StateControl/ObservacoesState}"
+                required="true" />
+
+        </form:SimpleForm>
+    </content>
+    <buttons>
+      <Button id="btn_create_inp_out"
+        text="{i18n>btn.save}"
+        type="Accept"
+        press="onPressSaveInpOut"
+        icon="sap-icon://save" />
+
+      <Button
+        id="btn_cancel_create_inp_out"
+        text="{i18n>btn.cancel}"
+        type="Reject"
+        press="onPressCancelInpOut"
+        icon="sap-icon://decline" />
+    </buttons>
+  </Dialog>
+</c:FragmentDefinition>

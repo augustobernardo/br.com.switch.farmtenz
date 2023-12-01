@@ -11,7 +11,7 @@
         justifyContent="Center"
         alignContent="Center"
         alignItems="Center"
-        class="sapUiLargeMarginTop">
+        class="sapUiLargeMarginTop sapUiSmallMarginBeginEnd">
 
         <Title
           id="title_register"

@@ -55,13 +55,13 @@
 
     <buttons>
       <Button
-        text="{i18n>btnSave}"
+        text="{i18n>btn.save}"
         press="onSaveConfig"
         type="Emphasized"
         class="sapUiTinyMarginEnd" />
 
       <Button
-        text="{i18n>btnClose}"
+        text="{i18n>btn.close}"
         press="onCloseConfigDialog" />
     </buttons>
   </Dialog>

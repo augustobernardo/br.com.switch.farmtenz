@@ -1,0 +1,116 @@
+<c:FragmentDefinition xmlns:form="sap.ui.layout.form"
+	xmlns="sap.m"
+	xmlns:c="sap.ui.core">
+
+  <Dialog id="dialog_edit_inp_out" icon="sap-icon://edit" title="{i18n>dialog.editInpOut.title}">
+
+    <content>        
+        <form:SimpleForm >
+            
+            <!-- TIPO -->
+            <Label 
+                id="lbl_edit_inp_out_type_edit"
+                text="{i18n>table.column.inpOut.type}" 
+                required="true" />
+                
+            <RadioButtonGroup 
+                id="radio_btn_group_type_edit"
+                columns="2"
+                selectedIndex="{inpOutView>/NewInpOut/TipoSelectedKey}">
+                    <RadioButton  text="{i18n>table.column.inpOut.input}" />
+                    <RadioButton valueState="Error" text="{i18n>table.column.inpOut.output}"/>
+            </RadioButtonGroup>
+
+            <!-- NOME -->
+            <Label 
+                id="lbl_edit_inp_out_name_edit"
+                text="{i18n>table.column.chemicalComp.name}" 
+                required="true" />
+
+            <Input
+                id="inp_edit_inp_out_name_edit"
+                value="{inpOutView>/NewInpOut/NomeComp}"
+                valueState="{inpOutView>/StateControl/NomeCompState}"
+                showValueHelp="true"
+                valueHelpRequest=".onValueHelpRequest"
+                required="true" />
+
+            <!-- FORMULA -->
+            <Label
+                id="lbl_edit_inp_out_formula_edit"
+                text="{i18n>table.column.chemicalComp.formula}"/>
+
+            <Input
+                id="inp_edit_inp_out_formula_edit"
+                editable="false"
+                value="{inpOutView>/NewInpOut/Formula}"
+                valueState="{inpOutView>/StateControl/FormulaState}" />
+
+            <!-- MEDIDA -->
+            <Label
+                id="lbl_edit_inp_out_measure_edit"
+                text="{i18n>table.column.chemicalComp.formaMedida}"/>
+
+            <Input 
+                id="inp_edit_inp_out_measure_edit"
+                width="40%"
+                editable="false"
+                value="{inpOutView>/NewInpOut/FormaMedidaCompQui}"/>
+
+            <!-- QUANTIDADE -->
+            <Label
+                id="lbl_edit_inp_out_quantity_edit"
+                text="{i18n>table.column.inpOut.quantity}"/>
+
+            <Input 
+                id="inp_edit_inp_out_quantity_edit"
+                width="40%"
+                value="{inpOutView>/NewInpOut/Quantidade}"
+                valueState="{inpOutView>/StateControl/QuantidadeState}"
+                required="true" />
+            
+            <!-- DATA -->
+            <Label
+                id="lbl_edit_inp_out_date_edit"
+                text="{i18n>table.column.inpOut.date}"/>
+
+            <DatePicker
+                id="date_picker_edit_inp_out_edit"
+                value="{inpOutView>/NewInpOut/DataRegistroFormatted}"
+                valueState="{inpOutView>/StateControl/DataRegistroState}"
+                displayFormat="dd/MM/yyyy"
+                valueFormat="yyyy-MM-dd"
+                placeholder="dd/MM/yyyy"
+                width="40%"
+                required="true" />
+
+            <!-- OBSERVAÇÕES -->
+            <Label
+                id="lbl_edit_inp_out_observations_edit"
+                text="{i18n>table.column.inpOut.observations}"/>
+
+            <TextArea
+                id="text_area_edit_inp_out_observations_edit"
+                placeholder="{i18n>placeHolder.inpOut.observations}"
+                value="{inpOutView>/NewInpOut/Observacoes}"
+                valueState="{inpOutView>/StateControl/ObservacoesState}"
+                required="true" />
+
+        </form:SimpleForm>
+    </content>
+    <buttons>
+      <Button id="btn_edit_inp_out_edit"
+        text="{i18n>btn.save}"
+        type="Accept"
+        press="onPressSaveEditInpOut"
+        icon="sap-icon://save" />
+
+      <Button
+        id="btn_cancel_edit_inp_out_edit"
+        text="{i18n>btn.cancel}"
+        type="Reject"
+        press="onPressCancelEditInpOut"
+        icon="sap-icon://decline" />
+    </buttons>
+  </Dialog>
+</c:FragmentDefinition>

@@ -94,7 +94,7 @@ sap.ui.define([
 				if (sFormula === "") {
 					_this._oModelViewCompQui.setProperty("/StateControl/FormulaState", ValueState.Error);
 				}
-				return;				
+				return true;		
 			}
 
 			_this._oModelViewCompQui.setProperty("/StateControl/NomeCompState", ValueState.None);
@@ -103,8 +103,13 @@ sap.ui.define([
 			var oTable = _this.byId("table_comp_qui");
 			var oBinding = oTable.getBinding();
 			var sPath = oBinding.getPath();
-			
+
+			// get the last Id
+			var aItems = oBinding.getModel().getProperty(sPath);
+			var iLastId = aItems.length > 0 ? aItems[aItems.length - 1].IdCompQui : 0;
+
 			var oNewCompQui = {
+				"IdCompQui": iLastId + 1,
 				"NomeCompQui": sNomeComp,
 				"FormulaCompQui": sFormula,
 				"FormaMedidaCompQui": sFormaMedida
@@ -113,7 +118,7 @@ sap.ui.define([
 			if (this._checkCompQuiExists(_this, oNewCompQui, oBinding.getModel().getProperty(sPath))) {
 				_this._oView.setBusy(false);
 				sap.m.MessageToast.show(_this.getResourceBundle().getText("compQuiAlreadyExists"));
-				return;
+				return true;
 			} else {
 				var oModel = oBinding.getModel();
 				var aItems = oModel.getProperty(sPath);
@@ -123,8 +128,10 @@ sap.ui.define([
 				oModel.refresh(true);
 	
 				_this._oModelViewCompQui.setData(_this._setOModelViewCompQui());
+				_this._oModelViewCompQui.refresh(true);
 			}
 			_this._oView.setBusy(false);
+			return false;
 		},
 
 		/**
@@ -137,10 +144,10 @@ sap.ui.define([
 		 */
 		_checkCompQuiExists: function(_this, oEntry, aTableItems) {
 			var bExists = false;
-			var oEntryAux = this._toUpperCaseObjectValues(oEntry);
+			var oEntryAux = _this.toUpperCaseObjectValues(oEntry);
 
 			for (var i = 0; i < aTableItems.length; i++) {
-				var oItem = this._toUpperCaseObjectValues(aTableItems[i]);
+				var oItem = _this.toUpperCaseObjectValues(aTableItems[i]);
 
 				if (oEntryAux.NomeCompQui == oItem.NomeCompQui 
 					&& oEntryAux.FormulaCompQui == oItem.FormulaCompQui 
@@ -153,24 +160,6 @@ sap.ui.define([
 		},
 
 		/**
-		 * Convert to Upper Case the Object Values
-		 * @private
-		 * @param {Object} oObject - Object to be converted
-		 * @returns {Object} - Object with the values in Upper Case
-		 */
-		_toUpperCaseObjectValues: function(oObject) {
-			const oObjectAux = oObject;
-			const oObjectFinal = {};
-
-			for (const sKey in oObject) {
-				if (oObjectAux.hasOwnProperty(sKey)) {
-					oObjectFinal[sKey] = oObjectAux[sKey].toUpperCase();
-				}
-			}
-			return oObjectFinal;
-		},
-
-		/**
 		 * Edit the line of Chemical Composition
 		 * @public
 		 * @param {Object} oEvent - Event of the Button
@@ -180,7 +169,7 @@ sap.ui.define([
 			var oRow = oEvent.getSource().getParent();
 			var oRowContext = oRow.getBindingContext("compQuiTable");
 			var oRowObject = oRowContext.getObject();
-			var sSelectedKey = oRowObject.FormaMedidaCompQui.toLocaleLowerCase().trim() === "gramas" ? "0" : "1";
+			var sSelectedKey = oRowObject.FormaMedidaCompQui.toLocaleLowerCase().trim().split(" ")[0] === "gramas" ? "0" : "1";
 
 			var oModelEdit = {
 				NomeComp: oRowObject.NomeCompQui,
@@ -223,19 +212,34 @@ sap.ui.define([
 
 			var sGrama = _this.getResourceBundle().getText("select.item.measure.grama");
 			var sMililitro = _this.getResourceBundle().getText("select.item.measure.mililitro");
-			var sFormaMedida = oEditedCompQui.FormaMedidaCompQui === "0" ? sGrama : sMililitro;
+			
+			var sFormaMedidaSelected = oEditedCompQui.FormaMedidaCompQui;
+			var sFormaMedida = sFormaMedidaSelected === "0" ? sGrama : sMililitro;
 
 			var aCompQuiTableData = _this.getView().getModel("compQuiTable");
 			var sPathRowOld = _this.oSelectedRowEditCompQui.oBindingContexts.compQuiTable.sPath;
 			var oRowOld = aCompQuiTableData.getProperty(sPathRowOld);
 
 			var aItems = aCompQuiTableData.getData().TableCompQui.Items;
+
+			// valid if the form is valid
+			if (oEditedCompQui.NomeComp === "" || oEditedCompQui.Formula === "") {
+				if (oEditedCompQui.NomeComp === "") {
+					_this._oModelViewCompQui.setProperty("/StateControl/NomeCompState", ValueState.Error);
+				}
+				if (oEditedCompQui.Formula === "") {
+					_this._oModelViewCompQui.setProperty("/StateControl/FormulaState", ValueState.Error);
+				}
+				return true;		
+			}
+
 			var aItemsNew = aItems.map(function(oItem) {
 				if (oItem.NomeCompQui === oRowOld.NomeCompQui &&
 					oItem.FormulaCompQui === oRowOld.FormulaCompQui &&
 					oItem.FormaMedidaCompQui === oRowOld.FormaMedidaCompQui) {
 					
 					return {
+						"IdCompQui": oRowTable.IdCompQui,
 						"NomeCompQui": oEditedCompQui.NomeComp,
 						"FormulaCompQui": oEditedCompQui.Formula,
 						"FormaMedidaCompQui": sFormaMedida
@@ -246,6 +250,7 @@ sap.ui.define([
 			});
 			aCompQuiTableData.setProperty("/TableCompQui/Items", aItemsNew);
 			aCompQuiTableData.refresh(true);
+			return false;
 		},
 	};
 });

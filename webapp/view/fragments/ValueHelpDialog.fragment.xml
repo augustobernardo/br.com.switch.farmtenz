@@ -1,0 +1,16 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog
+		id="selectDialog"
+		title="{i18n>table.title.chemicalComp}"
+		items="{inpOutView>/SearchHelp/TableCompQui}"
+		search=".onValueHelpSearch"
+		confirm=".onValueHelpClose"
+		cancel=".onValueHelpClose">
+		<StandardListItem
+			iconDensityAware="false"
+			iconInset="false"
+			title="{inpOutView>NomeCompQui}"
+            info="{inpOutView>FormaMedidaCompQui}"
+			description="{inpOutView>FormulaCompQui}" />
+	</SelectDialog>
+</core:FragmentDefinition>
