@@ -1,7 +1,8 @@
 sap.ui.define([
 	"br/com/switch/farmtenz/controller/BaseController",
-    "sap/ui/model/json/JSONModel"
-], function(BaseController, JSONModel) {
+    "sap/ui/model/json/JSONModel",
+	"sap/m/MessageBox"
+], function(BaseController, JSONModel, MessageBox) {
 	"use strict";
 
 	return BaseController.extend("br.com.switch.farmtenz.controller.Register", {
@@ -44,37 +45,58 @@ sap.ui.define([
 			let bResultPassword = this.checkPassword(oInputPassword.getValue(),	oInputPassword);
 			let bResultPasswordConfirm = this.checkPasswordConfirm(oInputPassConfirm.getValue(), oInputPassword.getValue(), oInputPassConfirm);
 
+			this._oView.setBusy(true);
+
 			if (bResultEmail && bResultUsername && bResultPassword && bResultPasswordConfirm) {
+				this._oView.setBusy(false);
 				return true;
+			} else {
+				this._oView.setBusy(false);
+
+				var bErrorEmail = oInputEmail.getValueState() === "Error" ? true : false;
+				var bErrorUsername = oInputUsername.getValueState() === "Error" ? true : false;
+				var bErrorPassword = oInputPassword.getValueState() === "Error" ? true : false;
+				var bErrorPassConfirm = oInputPassConfirm.getValueState() === "Error" ? true : false;
+
+				if (bErrorEmail || bErrorUsername || bErrorPassword || bErrorPassConfirm) {
+					this._oView.setBusy(false);
+					MessageBox.error(this.getResourceBundle().getText("login_form_fields_error"));
+				}
 			}
 			return false;
 		},
 
 		onRegister: function() {
 			if (this._checkRegisterForm()) {
-				let sUsername = this._oModelView.getProperty("/RegisterForm/Username");
-				let sPassword = this._oModelView.getProperty("/RegisterForm/Password");
-				let sEmail = this._oModelView.getProperty("/RegisterForm/Email");
-				let sConfirmPassword = this._oModelView.getProperty("/RegisterForm/PasswordConfirm");
+				this.register(this).then(() => {
+					this._oView.setBusy(false);
 
-				this._oView.setBusy(true);
+					let sTokenEmail = btoa(this._oModelView.getProperty("/RegisterForm/Email"));
+					let sTokenPassword = btoa(this._oModelView.getProperty("/RegisterForm/Password"));
 
-				let sTokenEmail = btoa(sEmail);
-				let sTokenPassword = btoa(sPassword);
-
-				let sCookieName = btoa("rememberMe");
-				let sCookieValue = btoa(sEmail+":"+sPassword);
-				let iDays = 7;
-				this.setCookie(sCookieName, sCookieValue, iDays);
-
-				localStorage.setItem("infoRegister", sTokenEmail+":"+sTokenPassword);
-
-                this.navTo("home", {
-                    token: sCookieValue+":"+sTokenGen,
-                }, true);
-
-				this._oView.setBusy(false);
+					this.navTo("home", {
+						token: sTokenEmail +":"+ sTokenPassword,
+					}, true);
+				});
 			}
+		},
+
+		register: function(_this) {
+            return new Promise(function(resolve, reject) {
+                let sPassword = _this._oModelView.getProperty("/RegisterForm/Password");
+                let sEmail = _this._oModelView.getProperty("/RegisterForm/Email");
+
+                let sTokenEmail = btoa(sEmail);
+				let sTokenPassword = btoa(sPassword);
+				var sCookieValue = btoa(sTokenEmail+":"+sTokenPassword);
+
+				var sCookieName = btoa("rememberMe");
+				var iDays = 7;
+				_this.setCookie(sCookieName, sCookieValue, iDays);
+
+                localStorage.setItem("infoLogin", sTokenEmail+":"+sTokenPassword);
+                resolve();
+            });
 		},
 
 		onSubmitRegister: function() {
