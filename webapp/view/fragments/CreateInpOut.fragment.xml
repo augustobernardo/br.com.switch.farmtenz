@@ -30,7 +30,7 @@
             <Input
                 id="inp_create_inp_out_name"
                 value="{inpOutView>/NewInpOut/NomeComp}"
-                valueHelpIconSrc="sap-icon://inspect"
+                valueHelpIconSrc="sap-icon://inspection"
                 valueState="{inpOutView>/StateControl/NomeCompState}"
                 showValueHelp="true"
                 valueHelpRequest=".onValueHelpRequest"

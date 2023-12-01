@@ -67,7 +67,7 @@
 					sortProperty="Status">
 					<table:template>
 						<ObjectStatus
-							class="sapUiSmallMarginBottom"
+							class="sapUiSmallMargin"
 							icon="{inpOutTable>StatusIcon}"
 							state="{inpOutTable>StatusState}" />
 					</table:template>
