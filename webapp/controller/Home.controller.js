@@ -34,7 +34,6 @@ sap.ui.define([
 			this._oModelViewTableCompQui = new JSONModel(this._setOModelViewTableCompQui());
 			this._oView.setModel(this._oModelViewTableCompQui, "compQuiTable");
 
-
 			this._oView.setBusyIndicatorDelay(0);
 
 			this._setLanguage();
@@ -48,17 +47,22 @@ sap.ui.define([
 		 * @override
 		 */
 		onAfterRendering: function() {
-			var aTableCompQuiData = this.getLocalStorage("tableCompQuiItems");
-			var aTableInpOut = this.getLocalStorage("inpOutTable");
+			try {
+				var aTableCompQuiData = this.getLocalStorage("tableCompQuiItems");
+				var aTableInpOut = this.getLocalStorage("inpOutTable");
+	
+				if (aTableCompQuiData) {
+					this._oModelViewTableCompQui.setProperty("/TableCompQui/Items", aTableCompQuiData);
+				}
+	
+				if (aTableInpOut) {
+					this._oModelViewTableInpOut.setProperty("/TableInOut/Items", aTableInpOut);
+				}
 
-			if (aTableCompQuiData) {
-				this._oModelViewTableCompQui.setProperty("/TableCompQui/Items", aTableCompQuiData);
+			} catch (error) {
+				this._oModelViewTableCompQui.setProperty("/TableCompQui/Items",[]);
+				this._oModelViewTableInpOut.setProperty("/TableInOut/Items",[]);
 			}
-
-			if (aTableInpOut) {
-				this._oModelViewTableInpOut.setProperty("/TableInOut/Items", aTableInpOut);
-			}
-
 		},
 
 		_setOModelView: function() {
