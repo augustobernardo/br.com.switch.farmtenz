@@ -57,16 +57,13 @@ sap.ui.define([
         },
 
         onLogin: function() {
-
-            this.getView().setBusy(true);
-
             if (this._checkLoginForm()) {
                 this._login(this).then(() => {
                     this._oView.setBusy(false);
-
+                    
                     let sTokenEmail = btoa(this._oModelView.getProperty("/LoginForm/Email"));
                     let sTokenPassword = btoa(this._oModelView.getProperty("/LoginForm/Password"));
-
+                    
                     this.navTo("home", {
                         token: sTokenEmail +":"+ sTokenPassword,
                     }, true);

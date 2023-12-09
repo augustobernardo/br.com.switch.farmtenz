@@ -4,8 +4,9 @@ sap.ui.define([
 	"sap/ui/model/FilterOperator",
 	"sap/ui/core/Fragment",
 	"sap/ui/Device",
-	"sap/ui/core/ValueState"
-],function(Sorter, Filter, FilterOperator, Fragment, Device, ValueState) {
+	"sap/ui/core/ValueState",
+	"sap/m/MessageToast"
+],function(Sorter, Filter, FilterOperator, Fragment, Device, ValueState, MessageToast) {
 	"use strict";
 
 	return {
@@ -117,7 +118,7 @@ sap.ui.define([
 
 			if (this._checkCompQuiExists(_this, oNewCompQui, oBinding.getModel().getProperty(sPath))) {
 				_this._oView.setBusy(false);
-				sap.m.MessageToast.show(_this.getResourceBundle().getText("compQuiAlreadyExists"));
+				MessageToast.show(_this.getResourceBundle().getText("compQuiAlreadyExists"));
 				return true;
 			} else {
 				var oModel = oBinding.getModel();
@@ -129,6 +130,8 @@ sap.ui.define([
 	
 				_this._oModelViewCompQui.setData(_this._setOModelViewCompQui());
 				_this._oModelViewCompQui.refresh(true);
+
+				_this.setLocalStorage("tableCompQuiItems", aItems);
 			}
 			_this._oView.setBusy(false);
 			return false;
@@ -179,6 +182,8 @@ sap.ui.define([
 
 			_this._oModelViewCompQui.setProperty("/EditRow", true);
 			_this._oModelViewCompQui.setProperty("/NewCompQui", oModelEdit)
+
+			_this.setLocalStorage("editCompQui", oModelTable);
 		},
 
 		/**
@@ -199,6 +204,8 @@ sap.ui.define([
 			oItems.splice(oIndex, 1);
 			_this._oModelViewTableCompQui.setProperty("/TableCompQui/Items", oItems);
 			_this._oModelViewTableCompQui.refresh();
+
+			_this.setLocalStorage("tableCompQuiItems", oItems);
 		},
 
 		/**
@@ -250,6 +257,8 @@ sap.ui.define([
 			});
 			aCompQuiTableData.setProperty("/TableCompQui/Items", aItemsNew);
 			aCompQuiTableData.refresh(true);
+
+			_this.setLocalStorage("tableCompQuiItems", aItemsNew);
 			return false;
 		},
 	};

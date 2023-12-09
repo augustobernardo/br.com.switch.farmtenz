@@ -267,5 +267,14 @@ sap.ui.define([
 			}
 			return oObjectFinal;
 		},
+
+		getLocalStorage: function(sLocal) {
+			let oValue = localStorage.getItem(sLocal);
+			return JSON.parse(oValue);
+		},
+
+		setLocalStorage: function(sLocal, oValue) {
+			localStorage.setItem(sLocal, JSON.stringify(oValue));
+		},
 	});
 });

@@ -44,6 +44,23 @@ sap.ui.define([
 			this._oRouter.getRoute("home").attachPatternMatched(this._onRouteMatched, this);
 		},
 
+		/**
+		 * @override
+		 */
+		onAfterRendering: function() {
+			var aTableCompQuiData = this.getLocalStorage("tableCompQuiItems");
+			var aTableInpOut = this.getLocalStorage("inpOutTable");
+
+			if (aTableCompQuiData) {
+				this._oModelViewTableCompQui.setProperty("/TableCompQui/Items", aTableCompQuiData);
+			}
+
+			if (aTableInpOut) {
+				this._oModelViewTableInpOut.setProperty("/TableInOut/Items", aTableInpOut);
+			}
+
+		},
+
 		_setOModelView: function() {
 			var oModel = {
 				Theme: "system",
@@ -196,7 +213,6 @@ sap.ui.define([
 					this._oModelView.setProperty("/isLightMode", false);
 				}
 			}
-
 		},
 
 		_setLanguage: function() {
@@ -306,7 +322,7 @@ sap.ui.define([
 		/* ENTRADAS E SAÍDAS */
 		onShowCreateInpOutDialog: function(oEvent) {
 			this.pDialogCreateInpOut ??= this.loadFragment({
-				name: "br.com.switch.farmtenz.view.fragments.CreateInpOut"
+				name: "br.com.switch.farmtenz.view.fragments.operations.CreateInpOut"
 			});
 			this.pDialogCreateInpOut.then((oDialog) => oDialog.open())
 		},
@@ -349,7 +365,7 @@ sap.ui.define([
 		_handleDialogEditInpOut: function(bShow) {
 			if (bShow) {
 				this.pDialogEditInpOut ??= this.loadFragment({
-					name: "br.com.switch.farmtenz.view.fragments.EditInpOut"
+					name: "br.com.switch.farmtenz.view.fragments.operations.EditInpOut"
 				});
 				this.pDialogEditInpOut.then((oDialog) => oDialog.open());
 			} else {
@@ -382,7 +398,6 @@ sap.ui.define([
 				this.byId("table_home")
 			);
 		},
-
 		/* ENTRADAS E SAÍDAS */
 		/* ================= */
 
@@ -415,7 +430,7 @@ sap.ui.define([
 
 		onShowCreateCompDialog: function(oEvent) {
 			this.pDialogCreateComp ??= this.loadFragment({
-				name: "br.com.switch.farmtenz.view.fragments.CreateCompDialog"
+				name: "br.com.switch.farmtenz.view.fragments.operations.CreateCompDialog"
 			});
 			this.pDialogCreateComp.then((oDialog) => oDialog.open())
 		},
@@ -440,7 +455,7 @@ sap.ui.define([
 		_handleDialogEditCompQui: function(bShow) {
 			if (bShow) {
 				this.pDialogEditComp ??= this.loadFragment({
-					name: "br.com.switch.farmtenz.view.fragments.EditCompQuiDialog"
+					name: "br.com.switch.farmtenz.view.fragments.operations.EditCompQuiDialog"
 				});
 				this.pDialogEditComp.then((oDialog) => oDialog.open());
 			} else {

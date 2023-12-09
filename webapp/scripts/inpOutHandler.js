@@ -45,7 +45,6 @@ sap.ui.define([
 				oObjectAux.Quantidade = oObjectAux.Quantidade.replace(".", ",");
 			}
 
-            
 			var oNewInpOut = {
 				"IdInpOut": iLastId + 1,
 				"NomeComp": oObjectAux.NomeComp,
@@ -61,7 +60,6 @@ sap.ui.define([
 				"DataRegistroFormatted": oObjectAux.DataRegistroFormatted.split("-").reverse().join("/"),
 			}
 
-            
             if (this._checkInpOutExists(_this, oNewInpOut, aItems)) {
                 _this._oView.setBusy(false);
 				sap.m.MessageToast.show(_this.getResourceBundle().getText("inpOutAlreadyExists"));
@@ -72,6 +70,8 @@ sap.ui.define([
             _this._oModelViewTableInpOut.setProperty("/TableInOut/Items", aItems);
             _this._oModelViewTableInpOut.refresh(true);
 			_this._oView.setBusy(false);
+
+			_this.setLocalStorage("inpOutTable", aItems);
 			return true;
         },
 
@@ -166,6 +166,8 @@ sap.ui.define([
 			oItems.splice(oIndex, 1);
 			_this._oModelViewTableInpOut.setProperty("/TableInOut/Items", oItems);
 			_this._oModelViewTableInpOut.refresh();
+
+			_this.setLocalStorage("inpOutTable", oItems);
 		},
 
 		/**
@@ -244,8 +246,10 @@ sap.ui.define([
 			});
 			
 			aInpOutTableData.setProperty("/TableInOut/Items", aItemsNew);
-
 			_this._oModelViewTableInpOut.refresh(true);
+
+			_this.setLocalStorage("inpOutTable", aItemsNew);
+			
 			_this.getView().setBusy(false);
 		},
 
