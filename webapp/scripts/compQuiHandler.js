@@ -181,9 +181,7 @@ sap.ui.define([
 			};
 
 			_this._oModelViewCompQui.setProperty("/EditRow", true);
-			_this._oModelViewCompQui.setProperty("/NewCompQui", oModelEdit)
-
-			_this.setLocalStorage("editCompQui", oModelTable);
+			_this._oModelViewCompQui.setProperty("/NewCompQui", oModelEdit);
 		},
 
 		/**
